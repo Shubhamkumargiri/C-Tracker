@@ -1,0 +1,10 @@
+body{
+  height: 100vh;
+  background-color: rgb(2, 2, 2);
+  color: rgb(34, 33, 33);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  font-family: 'Poppins', sans-serif;
+}

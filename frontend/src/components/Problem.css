@@ -1,0 +1,49 @@
+.problem{
+  color:var(--landing-text);
+  padding:80px 60px;
+  text-align:center;
+}
+
+.problem h2{
+  font-size:2.5rem;
+  margin-bottom:50px;
+  color:var(--landing-heading);
+}
+
+/* Cards container */
+
+.problem-cards{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+/* Individual card */
+
+.problem-card{
+  background:var(--landing-surface);
+  padding:30px;
+  width:280px;
+  border-radius:10px;
+  border:1px solid var(--landing-border);
+  box-shadow:var(--landing-card-shadow);
+  transition:0.3s;
+}
+
+.problem-card h3{
+  color:var(--landing-accent);
+  margin-bottom:15px;
+}
+
+.problem-card p{
+  color:var(--landing-muted);
+  font-size:15px;
+}
+
+/* Hover effect */
+
+.problem-card:hover{
+  transform:translateY(-5px);
+  box-shadow:var(--landing-card-hover-shadow);
+}

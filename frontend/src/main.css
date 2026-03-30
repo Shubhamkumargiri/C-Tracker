@@ -1,0 +1,59 @@
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'comic sans ms', cursive, sans-serif;
+}
+
+:root{
+  --landing-bg:
+    radial-gradient(circle at top left, rgba(69, 104, 193, 0.22), transparent 28%),
+    linear-gradient(135deg, #0a0a0a, #12071e 55%, #0e1830 100%);
+  --landing-surface: rgba(26, 0, 31, 0.9);
+  --landing-surface-strong: rgba(18, 8, 34, 0.96);
+  --landing-text: #ffffff;
+  --landing-muted: #cfcfcf;
+  --landing-heading: #b026ff;
+  --landing-accent: #b026ff;
+  --landing-accent-contrast: #050505;
+  --landing-card-shadow: 0 12px 35px rgba(176,38,255,0.22);
+  --landing-card-hover-shadow: 0 16px 40px rgba(176,38,255,0.34);
+  --landing-divider: linear-gradient(90deg, transparent, rgba(240, 238, 241, 0.9), transparent);
+  --landing-nav-bg: linear-gradient(135deg, rgba(8, 13, 24, 0.94), rgba(14, 24, 46, 0.94));
+  --landing-nav-link: #ffffff;
+  --landing-border: rgba(88, 129, 213, 0.18);
+  --landing-border-strong: rgba(105, 148, 235, 0.34);
+  --landing-button-bg: linear-gradient(45deg,#7a00ff,#b026ff);
+  --landing-button-text: #ffffff;
+  --landing-toggle-bg: linear-gradient(135deg, rgba(15, 20, 36, 0.95), rgba(28, 8, 44, 0.95));
+}
+
+body[data-landing-theme="day"]{
+  --landing-bg:
+    radial-gradient(circle at top left, rgba(75, 128, 233, 0.1), transparent 26%),
+    linear-gradient(180deg, #f7f9fc 0%, #edf1f6 52%, #e5ebf2 100%);
+  --landing-surface: rgba(255, 255, 255, 0.88);
+  --landing-surface-strong: rgba(255, 255, 255, 0.98);
+  --landing-text: #121722;
+  --landing-muted: #536074;
+  --landing-heading: #111111;
+  --landing-accent: #2d63c8;
+  --landing-accent-contrast: #ffffff;
+  --landing-card-shadow: 0 16px 38px rgba(18, 23, 34, 0.08);
+  --landing-card-hover-shadow: 0 18px 42px rgba(45, 99, 200, 0.12);
+  --landing-divider: linear-gradient(90deg, transparent, rgba(29, 39, 58, 0.18), transparent);
+  --landing-nav-bg: rgba(7, 9, 14, 0.94);
+  --landing-nav-link: #f7fbff;
+  --landing-border: rgba(255, 255, 255, 0.08);
+  --landing-border-strong: rgba(45, 99, 200, 0.2);
+  --landing-button-bg: linear-gradient(135deg, #111111, #3b6bd7);
+  --landing-button-text: #ffffff;
+  --landing-toggle-bg: linear-gradient(135deg, #101723, #1b2940);
+}
+
+body{
+  background: var(--landing-bg);
+  color: var(--landing-text);
+  transition: background 0.35s ease, color 0.35s ease;
+}

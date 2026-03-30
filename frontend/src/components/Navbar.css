@@ -1,0 +1,254 @@
+/* Navbar container */
+
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:12px 42px;
+
+  background: var(--landing-nav-bg);
+  border-bottom: 1px solid var(--landing-border);
+  box-shadow: 0 16px 40px rgba(4, 8, 18, 0.08);
+  
+
+  position:sticky;
+  top:0;
+  z-index:1000;
+  backdrop-filter: blur(14px);
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.navbar-hidden{
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Logo */
+.s1{
+  color: #7a00ff;
+}
+.s2{
+  color:rgb(255, 255, 255)
+}
+
+.navbar-logo img{
+  display:block;
+  width:142px;
+  height:auto;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.32));
+}
+
+.navbar-logo a{
+  display:block;
+}
+
+/* Links */
+
+.navbar-links{
+  display:flex;
+  list-style:none;
+  gap:24px;
+}
+
+.navbar-links a{
+  color:var(--landing-nav-link);
+  text-decoration:none;
+  font-size:15px;
+  font-weight:500;
+  transition:0.3s;
+}
+
+/* Hover animation */
+
+.navbar-links a:hover{
+  color:var(--landing-accent);
+}
+
+/* CTA buttons */
+
+.navbar-cta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* Login button */
+
+.btn-login{
+  padding:8px 16px;
+  border-radius:6px;
+
+  border:1px solid var(--landing-accent);
+  color:var(--landing-nav-link);
+  text-decoration:none;
+  font-weight:500;
+  background: rgba(255, 255, 255, 0.02);
+
+  transition:0.3s;
+}
+
+.btn-login:hover{
+  background:var(--landing-accent);
+  color:var(--landing-accent-contrast);
+  box-shadow:0px 10px 24px rgba(59,107,215,0.22);
+}
+
+/* Signup button */
+
+.btn-signup{
+  padding:9px 18px;
+
+  border-radius:6px;
+  text-decoration:none;
+
+  background:var(--landing-button-bg);
+  color:var(--landing-button-text);
+  font-weight:600;
+
+  transition:0.3s;
+}
+
+.btn-login,
+.btn-signup{
+  font-size:14px;
+}
+
+.btn-signup:hover{
+  transform:translateY(-2px);
+  box-shadow:0px 10px 24px rgba(59,107,215,0.22);
+}
+
+.theme-toggle{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid var(--landing-border-strong);
+  background: var(--landing-toggle-bg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 10px 24px rgba(4, 8, 18, 0.12);
+}
+
+.theme-toggle:hover{
+  transform:translateY(-2px);
+  border-color:var(--landing-accent);
+}
+
+.theme-icon{
+  position:relative;
+  width:22px;
+  height:22px;
+  display:block;
+}
+
+.moon-shape{
+  position:absolute;
+  top:3px;
+  right:4px;
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #edf3ff 46%, #b9cfff 100%);
+  box-shadow:
+    -5px 0 0 0 #152747 inset,
+    0 0 12px rgba(127, 174, 255, 0.35);
+}
+
+.star-shape{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:linear-gradient(135deg, #ffffff, #8dc0ff);
+  clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+  box-shadow: 0 0 8px rgba(123, 176, 255, 0.45);
+}
+
+.star-one{
+  top:3px;
+  left:5px;
+}
+
+.star-two{
+  top:12px;
+  left:1px;
+  width:3px;
+  height:3px;
+}
+
+.sun-shape{
+  position:absolute;
+  top:4px;
+  left:6px;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#f2c24f;
+  box-shadow:0 0 0 5px rgba(242, 194, 79, 0.16);
+}
+
+.cloud-shape{
+  position:absolute;
+  right:1px;
+  bottom:4px;
+  width:14px;
+  height:8px;
+  border-radius:999px;
+  background:#eef3fb;
+}
+
+.cloud-shape::before,
+.cloud-shape::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:#eef3fb;
+}
+
+.cloud-shape::before{
+  width:7px;
+  height:7px;
+  left:1px;
+  top:-4px;
+}
+
+.cloud-shape::after{
+  width:9px;
+  height:9px;
+  right:1px;
+  top:-5px;
+}
+
+@media (max-width: 1024px){
+  .navbar{
+    padding:12px 22px;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .navbar-links{
+    gap:16px;
+    flex-wrap:wrap;
+  }
+}
+
+@media (max-width: 640px){
+  .navbar{
+    padding:12px 14px;
+  }
+
+  .navbar-links{
+    width:100%;
+    justify-content:center;
+    gap:14px;
+  }
+
+  .navbar-cta{
+    width:100%;
+    justify-content:flex-end;
+  }
+}

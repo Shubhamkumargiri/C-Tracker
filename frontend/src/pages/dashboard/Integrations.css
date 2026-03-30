@@ -1,0 +1,205 @@
+.integrations-page{
+  min-height:100vh;
+  color:var(--dashboard-text);
+  padding:40px 20px;
+  text-align:center;
+}
+
+.integrations-page h1{
+  color:var(--dashboard-accent);
+  margin-bottom:10px;
+}
+
+.sub{
+  color:var(--dashboard-muted);
+  margin-bottom:40px;
+}
+
+.integrations-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:25px;
+  align-items:stretch;
+}
+
+.integration-card{
+  background:var(--dashboard-surface);
+  padding:30px;
+  border-radius:18px;
+  border:1px solid var(--dashboard-border);
+  box-shadow:var(--dashboard-shadow);
+  transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position:relative;
+  overflow:hidden;
+  text-align:left;
+}
+
+.integration-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 24px 44px rgba(2, 6, 17, 0.28);
+}
+
+.integration-card::before{
+  content:"";
+  position:absolute;
+  inset:0 auto auto 0;
+  width:100%;
+  height:5px;
+  opacity:0.95;
+}
+
+.integration-card.github::before{
+  background:linear-gradient(90deg, #7ea7ff, #b0c8ff);
+}
+
+.integration-card.leetcode::before{
+  background:linear-gradient(90deg, #ffb347, #ffd37e);
+}
+
+.integration-card.linkedin::before{
+  background:linear-gradient(90deg, #44a0cf, #83dcff);
+}
+
+.integration-card.is-connected{
+  border-color:rgba(59, 175, 115, 0.36);
+  background:
+    linear-gradient(135deg, rgba(46, 143, 94, 0.08), transparent 45%),
+    var(--dashboard-surface);
+}
+
+.integration-card h3{
+  color:var(--dashboard-accent);
+  margin-bottom:0;
+}
+
+.integration-card-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.integration-card-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.integration-icon{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1rem;
+  font-weight:700;
+  color:var(--dashboard-button-text);
+  background:linear-gradient(135deg, var(--dashboard-accent), var(--dashboard-accent-deep));
+  box-shadow:0 10px 24px rgba(2, 6, 17, 0.2);
+}
+
+.integration-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:108px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255, 255, 255, 0.04);
+  border:1px solid var(--dashboard-border);
+  color:var(--dashboard-muted);
+  font-size:0.78rem;
+  font-weight:600;
+}
+
+.integration-status.connected{
+  color:#dff7ea;
+  background:rgba(30, 124, 76, 0.18);
+  border-color:rgba(59, 175, 115, 0.34);
+}
+
+.integration-card p{
+  color:var(--dashboard-muted);
+  margin-bottom:14px;
+  line-height:1.6;
+}
+
+.integration-meta{
+  display:flex;
+  justify-content:flex-start;
+  margin-bottom:18px;
+}
+
+.integration-points{
+  list-style:none;
+  padding:0;
+  margin:0 0 20px;
+  display:grid;
+  gap:10px;
+}
+
+.integration-points li{
+  position:relative;
+  padding-left:20px;
+  color:var(--dashboard-text);
+  font-size:0.92rem;
+}
+
+.integration-points li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:8px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--dashboard-accent), var(--dashboard-accent-deep));
+}
+
+.integration-actions{
+  display:flex;
+  gap:10px;
+  margin-top:auto;
+}
+
+.integration-primary-btn,
+.integration-secondary-btn{
+  border:none;
+  padding:10px 16px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  transition:transform 0.2s ease, opacity 0.2s ease;
+}
+
+.integration-primary-btn{
+  background:linear-gradient(135deg, var(--dashboard-accent), var(--dashboard-accent-deep));
+  color:var(--dashboard-button-text);
+}
+
+.integration-secondary-btn{
+  background:transparent;
+  border:1px solid var(--dashboard-border);
+  color:var(--dashboard-text);
+}
+
+.integration-primary-btn:hover,
+.integration-secondary-btn:hover{
+  transform:translateY(-1px);
+  opacity:0.96;
+}
+
+@media (max-width: 960px){
+  .integrations-grid{
+    grid-template-columns:1fr;
+  }
+
+  .integration-actions{
+    flex-direction:column;
+  }
+}
+
+
+

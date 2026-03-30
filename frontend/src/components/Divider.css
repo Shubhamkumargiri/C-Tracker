@@ -1,0 +1,10 @@
+.divider{
+  width:80%;
+  height:2px;
+
+  margin:60px auto;
+
+  
+  background:var(--landing-divider);
+  border-radius:0px;   /* sharp edges */
+}

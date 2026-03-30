@@ -1,0 +1,111 @@
+.sidebar {
+  width: 236px;
+  height: 100vh;
+  background: var(--dashboard-sidebar-bg);
+  color: var(--dashboard-sidebar-text);
+  padding: 20px 14px;
+  box-shadow: 20px 0 40px rgba(1, 5, 16, 0.42);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--dashboard-border);
+}
+
+.sidebar-brand {
+  margin-bottom: 20px;
+  padding: 6px 8px 14px;
+  border-bottom: 1px solid var(--dashboard-border);
+}
+
+.logo-image {
+  width: 142px;
+  height: auto;
+}
+
+.sidebar-brand p {
+  margin: 10px 0 0;
+  color: var(--dashboard-sidebar-muted);
+  font-size: 0.88rem;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 9px;
+  color: var(--dashboard-sidebar-text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
+}
+
+.sidebar-link:hover {
+  color: var(--dashboard-text);
+  background: var(--dashboard-accent-soft);
+}
+
+.sidebar-link.active {
+  color: var(--dashboard-text);
+  background: var(--dashboard-sidebar-active-bg);
+  border-color: var(--dashboard-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 12px 6px;
+  border-top: 1px solid var(--dashboard-border);
+}
+
+.sidebar-footer-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--dashboard-accent), var(--dashboard-accent-deep));
+  box-shadow: 0 0 12px var(--dashboard-accent-soft);
+  flex-shrink: 0;
+}
+
+.sidebar-footer-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-footer-copy strong {
+  color: var(--dashboard-text);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.sidebar-footer-copy small {
+  color: var(--dashboard-sidebar-muted);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 960px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    box-shadow: none;
+  }
+}

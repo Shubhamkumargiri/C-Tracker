@@ -1,0 +1,147 @@
+.features-page{
+  color:var(--landing-text);
+  padding-top:80px;
+}
+
+/* HERO */
+
+.features-hero{
+  text-align:center;
+  padding:120px 20px;
+}
+
+.features-hero h1{
+  font-size:3rem;
+  margin-bottom:20px;
+  line-height:1.3;
+}
+
+.features-hero h1 span{
+  color:var(--landing-accent);
+}
+
+.features-hero p{
+  color:var(--landing-muted);
+  max-width:600px;
+  margin:auto;
+  font-size:1.05rem;
+}
+
+/* FEATURES GRID */
+
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+  padding:80px 60px;
+}
+
+/* FEATURE CARD */
+
+.feature-card{
+  background:var(--landing-surface);
+  padding:30px;
+  border-radius:12px;
+  border:1px solid var(--landing-border);
+  box-shadow:var(--landing-card-shadow);
+
+  transition:all 0.3s ease;
+}
+
+.feature-card h3{
+  color:var(--landing-accent);
+  margin-bottom:12px;
+}
+
+.feature-card p{
+  color:var(--landing-muted);
+  font-size:0.95rem;
+}
+
+/* Hover animation */
+
+.feature-card:hover{
+  transform:translateY(-8px);
+  box-shadow:var(--landing-card-hover-shadow);
+}
+
+/* AI SECTION */
+
+.ai-section{
+  text-align:center;
+  padding:100px 20px;
+}
+
+.ai-section h2{
+  color:var(--landing-heading);
+  margin-bottom:20px;
+}
+
+.ai-section p{
+  color:var(--landing-muted);
+  max-width:700px;
+  margin:auto;
+}
+
+/* INTEGRATIONS */
+
+.integrations{
+  padding:80px 20px;
+  text-align:center;
+}
+
+.integrations h2{
+  color:var(--landing-heading);
+}
+
+.integration-grid{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  margin-top:40px;
+  flex-wrap:wrap;
+}
+
+.integration-card{
+  background:var(--landing-surface);
+  padding:30px 50px;
+  border-radius:10px;
+  color:var(--landing-accent);
+  border:1px solid var(--landing-border);
+
+  transition:all 0.3s ease;
+}
+
+.integration-card:hover{
+  transform:translateY(-5px);
+  box-shadow:var(--landing-card-hover-shadow);
+}
+
+/* CTA */
+
+.features-cta{
+  text-align:center;
+  padding:100px 20px;
+}
+
+.features-cta h2{
+  margin-bottom:30px;
+}
+
+.features-cta a{
+  background:var(--landing-button-bg);
+  border:none;
+  padding:14px 30px;
+  border-radius:8px;
+  color:var(--landing-button-text);
+  cursor:pointer;
+  font-size:1rem;
+  text-decoration:none;
+  display:inline-block;
+  transition:all 0.3s ease;
+}
+
+.features-cta a:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--landing-card-hover-shadow);
+}

@@ -1,0 +1,80 @@
+/* Hero Section */
+
+.hero{
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--landing-text);
+  text-align: center;
+  padding: 40px;
+}
+
+/* Hero Content */
+.span{
+    color: var(--landing-text);
+}
+.hero-content{
+  max-width: 800px;
+}
+
+/* Heading */
+
+.hero h1{
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: var(--landing-heading);
+}
+
+/* Paragraph */
+
+.hero p{
+  font-size: 1.2rem;
+  color: var(--landing-muted);
+  margin-bottom: 30px;
+}
+
+/* Buttons Container */
+
+.hero-buttons{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Primary Button */
+
+.btn-primary{
+  background: var(--landing-button-bg);
+  border: none;
+  padding: 12px 26px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--landing-button-text);
+  text-decoration: none;
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.btn-primary:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--landing-card-hover-shadow);
+}
+
+/* Secondary Button */
+
+.btn-secondary{
+  background: transparent;
+  border: 1px solid var(--landing-accent);
+  color: var(--landing-text);
+  padding: 12px 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover{
+  background: var(--landing-accent);
+  color: var(--landing-accent-contrast);
+}

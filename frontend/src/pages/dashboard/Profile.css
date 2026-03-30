@@ -1,0 +1,120 @@
+.profile-page{
+    min-height:100vh;
+    background:transparent;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Profile Card */
+
+.profile-card{
+    background:var(--dashboard-surface);
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:360px;
+    border:1px solid var(--dashboard-border);
+    box-shadow:var(--dashboard-shadow);
+}
+
+.profile-dp{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:20px;
+    border:3px solid var(--dashboard-accent);
+}
+
+.profile-initials{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 20px;
+    background:linear-gradient(135deg,var(--dashboard-accent),var(--dashboard-accent-deep));
+    color:var(--dashboard-button-text);
+    font-size:2rem;
+    font-weight:700;
+    letter-spacing:0.08em;
+}
+
+.profile-card h2{
+    color:var(--dashboard-accent);
+}
+
+.profile-card p{
+    color:var(--dashboard-muted);
+    margin-bottom:18px;
+}
+
+.profile-file-input{
+    display:none;
+}
+
+.photo-actions{
+    display:flex;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.upload-btn{
+    flex:1;
+    background:var(--dashboard-input-bg);
+    border:1px solid var(--dashboard-accent);
+    padding:11px 18px;
+    color:var(--dashboard-text);
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.upload-btn:hover{
+    background:var(--dashboard-accent-soft);
+}
+
+.remove-btn{
+    flex:1;
+    background:transparent;
+    border:1px solid var(--dashboard-border);
+    padding:11px 18px;
+    color:var(--dashboard-text);
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.remove-btn:hover{
+    border-color:var(--dashboard-accent);
+}
+
+.profile-error{
+    color:var(--dashboard-danger);
+    margin-bottom:16px;
+}
+
+/* Buttons */
+
+.profile-buttons{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+
+.logout-btn{
+    width:100%;
+    background:var(--dashboard-surface-strong);
+    border:1px solid var(--dashboard-accent);
+    padding:10px 18px;
+    color:var(--dashboard-text);
+    border-radius:6px;
+    cursor:pointer;
+}
+
+@media (max-width: 480px){
+    .profile-card{
+        width:100%;
+    }
+
+    .photo-actions{
+        flex-direction:column;
+    }
+}

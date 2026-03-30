@@ -1,0 +1,48 @@
+.integrations{
+  color:var(--landing-text);
+  padding:80px 60px;
+  text-align:center;
+}
+
+.integrations h2{
+  font-size:2.5rem;
+  margin-bottom:20px;
+  color:var(--landing-heading);
+}
+
+.integration-subtext{
+  color:var(--landing-muted);
+  margin-bottom:50px;
+}
+
+.integration-cards{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+.integration-card{
+  background:var(--landing-surface);
+  padding:30px;
+  width:260px;
+  border-radius:12px;
+  border:1px solid var(--landing-border);
+  box-shadow:var(--landing-card-shadow);
+  transition:0.3s;
+}
+
+.integration-card h3{
+  color:var(--landing-accent);
+  margin-bottom:10px;
+}
+
+.integration-card p{
+  color:var(--landing-muted);
+}
+
+.integration-card:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--landing-card-hover-shadow);
+}
+
