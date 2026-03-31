@@ -84,9 +84,22 @@
 
 .auth-error{
     margin:0 0 15px;
-    color:#ff7b7b;
-    font-size:0.95rem;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid rgba(255, 107, 107, 0.45);
+    background:rgba(120, 24, 36, 0.28);
+    color:#ff9aa5;
+    font-size:0.92rem;
+    line-height:1.45;
     text-align:left;
+}
+
+.password-hint{
+    margin:-6px 0 15px;
+    font-size:0.84rem;
+    line-height:1.5;
+    text-align:left;
+    color:rgba(240, 236, 255, 0.76);
 }
 
 /* Footer */

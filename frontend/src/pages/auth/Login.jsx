@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import { apiRequest } from "../../lib/api"
 import { setAuthSession } from "../../lib/auth"
 
-function Login(){
+function Login() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({ email: "", password: "" })
   const [error, setError] = useState("")
@@ -37,16 +37,13 @@ function Login(){
     }
   }
 
-  return(
-
+  return (
     <div className="login-page">
-
       <Link to="/" className="auth-back">
-        <span aria-hidden="true">←</span> Back
+        <span aria-hidden="true">&larr;</span> Back
       </Link>
 
       <div className="login-card">
-
         <h1>Welcome Back</h1>
 
         <p>
@@ -54,7 +51,6 @@ function Login(){
         </p>
 
         <form className="login-form" onSubmit={handleLogin}>
-
           <input
             type="email"
             name="email"
@@ -73,24 +69,25 @@ function Login(){
             required
           />
 
+          <div className="auth-row">
+            <Link to="/forgot-password" className="auth-inline-link">
+              Forgot password?
+            </Link>
+          </div>
+
           {error && <p className="auth-error">{error}</p>}
 
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Logging in..." : "Login"}
           </button>
-
         </form>
 
         <p className="login-footer">
-          Don't have an account? <Link to="/signup">Sign Up</Link >
+          Don't have an account? <Link to="/signup">Sign Up</Link>
         </p>
-
       </div>
-
     </div>
-
   )
-
 }
 
 export default Login
