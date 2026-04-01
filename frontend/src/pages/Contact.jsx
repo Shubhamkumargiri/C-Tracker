@@ -54,7 +54,7 @@ function Contact(){
 
           <h2>Get In Touch</h2>
 
-          <p>Email: support@neuromirror.ai</p>
+          <p>Email: support@CarrerTracker.ai</p>
 
           <p>Partnerships: partners@neuromirror.ai</p>
 
