@@ -56,7 +56,7 @@ function Contact(){
 
           <p>Email: support@CarrerTracker.ai</p>
 
-          <p>Partnerships: partners@neuromirror.ai</p>
+          <p>Partnerships: partners@Careertracker.ai</p>
 
           <p>Location: Remote / Global</p>
 
