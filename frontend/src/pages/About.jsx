@@ -33,7 +33,7 @@ function About(){
 
         <p>
           We believe developers should have clear visibility
-          into their progress. NeuroMirror acts like a mirror
+          into their progress. CareerTracker acts like a career
           for your coding journey.
         </p>
 
