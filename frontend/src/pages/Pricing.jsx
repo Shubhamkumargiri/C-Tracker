@@ -29,9 +29,13 @@ function Pricing(){
 
                 <div className="price-card">
 
+                <span className="plan-badge">Starter</span>
+
                 <h3>Free</h3>
 
                 <h2>$0</h2>
+
+                <p className="price-meta">For solo learners building consistency</p>
 
                 <p>Perfect for students starting their journey.</p>
 
@@ -39,6 +43,7 @@ function Pricing(){
                     <li>Basic coding activity tracking</li>
                     <li>GitHub analysis</li>
                     <li>Weekly progress report</li>
+                    <li>Progress snapshots</li>
                 </ul>
 
                 <Link to="/signup">Start Free</Link>
@@ -48,9 +53,13 @@ function Pricing(){
 
                 <div className="price-card pro">
 
+                <span className="plan-badge">Most Popular</span>
+
                 <h3>Pro</h3>
 
                 <h2>$9/mo</h2>
+
+                <p className="price-meta">For developers actively preparing for roles</p>
 
                 <p>For serious developers improving their career.</p>
 
@@ -59,6 +68,7 @@ function Pricing(){
                     <li>Advanced coding analytics</li>
                     <li>Skill gap analysis</li>
                     <li>Priority insights</li>
+                    <li>Monthly readiness reports</li>
                 </ul>
 
                 <Link to="/signup">Get Pro</Link>
@@ -68,9 +78,13 @@ function Pricing(){
 
                 <div className="price-card">
 
+                <span className="plan-badge">Teams</span>
+
                 <h3>Enterprise</h3>
 
                 <h2>Custom</h2>
+
+                <p className="price-meta">For mentors, bootcamps, and institutions</p>
 
                 <p>For universities and training programs.</p>
 
@@ -78,6 +92,7 @@ function Pricing(){
                     <li>Student analytics dashboard</li>
                     <li>Batch performance tracking</li>
                     <li>Dedicated support</li>
+                    <li>Custom onboarding support</li>
                 </ul>
 
                 <Link to="/contact">Contact Us</Link>
@@ -85,6 +100,8 @@ function Pricing(){
                 </div>
 
             </section>
+
+            <p className="pricing-note">No credit card required for the free plan.</p>
 
 
             {/* CTA */}
