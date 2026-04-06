@@ -1,5 +1,6 @@
 .pricing-page{
   color:var(--landing-text);
+  padding-bottom:60px;
 }
 
 /* HERO */
@@ -12,10 +13,13 @@
 .pricing-hero h1{
   font-size:3rem;
   color:var(--landing-heading);
+  margin-bottom:14px;
 }
 
 .pricing-hero p{
   color:var(--landing-muted);
+  max-width:620px;
+  margin:0 auto;
 }
 
 /* CARDS */
@@ -36,19 +40,49 @@
   border:1px solid var(--landing-border);
   text-align:center;
   transition:0.3s;
+  position:relative;
+  box-shadow:var(--landing-card-shadow);
 }
 
 .price-card h3{
   color:var(--landing-accent);
+  margin:10px 0 6px;
+}
+
+.price-card h2{
+  margin:0;
+  font-size:2.4rem;
+  color:var(--landing-heading);
+}
+
+.plan-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 12px;
+  border-radius:999px;
+  border:1px solid var(--landing-border-strong);
+  background:rgba(255,255,255,0.08);
+  font-size:0.8rem;
+  font-weight:700;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+
+.price-meta{
+  margin:12px 0 10px;
+  color:var(--landing-muted);
+  min-height:42px;
 }
 
 .price-card ul{
   margin:20px 0;
   text-align:left;
+  padding-left:18px;
 }
 
 .price-card li{
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
 .price-card a{
@@ -62,12 +96,29 @@
   display:inline-block;
 }
 
+.price-card.pro{
+  transform:translateY(-10px);
+  border-color:var(--landing-border-strong);
+}
+
 .price-card:hover{
   transform:scale(1.05);
   box-shadow:var(--landing-card-hover-shadow);
 }
+
+.price-card.pro:hover{
+  transform:translateY(-10px) scale(1.05);
+}
+
 .price-card a:hover{
   box-shadow:var(--landing-card-hover-shadow);
+}
+
+.pricing-note{
+  text-align:center;
+  color:var(--landing-muted);
+  margin:-20px auto 0;
+  padding:0 20px;
 }
 
 /* CTA */
@@ -96,6 +147,40 @@
 }
 
 
-span{
+.pricing-cta span{
     color:var(--landing-text);
+}
+
+@media (max-width: 768px){
+  .pricing-hero{
+    padding:100px 20px 70px;
+  }
+
+  .pricing-hero h1{
+    font-size:2.4rem;
+  }
+
+  .pricing-cards{
+    gap:24px;
+    padding:40px 20px;
+  }
+
+  .price-card,
+  .price-card.pro{
+    width:min(100%, 340px);
+    transform:none;
+  }
+
+  .price-card:hover,
+  .price-card.pro:hover{
+    transform:translateY(-4px);
+  }
+
+  .pricing-cta{
+    padding:80px 20px 40px;
+  }
+
+  .pricing-cta h2{
+    font-size:2rem;
+  }
 }
