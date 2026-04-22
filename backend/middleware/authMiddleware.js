@@ -4,7 +4,7 @@ import User from "../models/User.js";
 export const protect = async (req, res, next) => {
   try {
     const authorization = req.headers.authorization || "";
-
+    
     if (!authorization.startsWith("Bearer ")) {
       return res.status(401).json({ message: "Authentication required" });
     }
