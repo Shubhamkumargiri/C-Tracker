@@ -22,7 +22,7 @@ function Contact(){
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
     )
 
-    window.location.href = `mailto:support@neuromirror.ai?subject=${subject}&body=${body}`
+    window.location.href = `mailto:support@careertracker.ai?subject=${subject}&body=${body}`
   }
 
   return(
@@ -54,9 +54,9 @@ function Contact(){
 
           <h2>Get In Touch</h2>
 
-          <p>Email: support@CarrerTracker.ai</p>
+          <p>Email: support@careertracker.ai</p>
 
-          <p>Partnerships: partners@Careertracker.ai</p>
+          <p>Partnerships: partners@careertracker.ai</p>
 
           <p>Location: Remote / Global</p>
 

@@ -15,6 +15,7 @@ function Navbar() {
     return window.localStorage.getItem(LANDING_THEME_KEY) || "night";
   });
   const [isScrolling, setIsScrolling] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     document.body.setAttribute("data-landing-theme", theme);
@@ -50,67 +51,74 @@ function Navbar() {
   };
 
   return (
-    <nav className={`navbar${isScrolling ? " navbar-hidden" : ""}`}>
+    <nav className={`navbar${isScrolling ? " navbar-hidden" : ""}${isOpen ? " navbar-expanded" : ""}`}>
       <div className="navbar-logo">
-        <Link to="/">
+        <Link to="/" onClick={() => setIsOpen(false)}>
           <img src={logo} alt="Career Tracker" />
         </Link>
       </div>
 
-      <ul className="navbar-links">
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/features">Features</Link>
-        </li>
+      <div className={`navbar-menu-container ${isOpen ? "open" : ""}`}>
+        <ul className="navbar-links">
+          <li>
+            <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
+          </li>
+          <li>
+            <Link to="/features" onClick={() => setIsOpen(false)}>Features</Link>
+          </li>
+          <li>
+            <Link to="/pricing" onClick={() => setIsOpen(false)}>Pricing</Link>
+          </li>
+          <li>
+            <Link to="/about" onClick={() => setIsOpen(false)}>About</Link>
+          </li>
+          <li>
+            <Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link>
+          </li>
+        </ul>
 
+        <div className="navbar-cta">
+          <Link to="/login" className="btn-login" onClick={() => setIsOpen(false)}>
+            Login
+          </Link>
 
-        <li>
-          <Link to="/pricing">Pricing</Link>
-        </li>
+          <Link to="/signup" className="btn-signup" onClick={() => setIsOpen(false)}>
+            Get Started
+          </Link>
 
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-
-
-        <li>
-          <Link to="/contact">Contact</Link>
-        </li>
-
-      </ul>
-
-      <div className="navbar-cta">
-        <Link to="/login" className="btn-login">
-          Login
-        </Link>
-
-        <Link to="/signup" className="btn-signup">
-          Get Started
-        </Link>
-
-        <button
-          type="button"
-          className={`theme-toggle ${theme}`}
-          onClick={toggleTheme}
-          aria-label={theme === "night" ? "Switch to day mode" : "Switch to night mode"}
-          title={theme === "night" ? "Switch to day mode" : "Switch to night mode"}
-        >
-          {theme === "night" ? (
-            <span className="theme-icon night-icon" aria-hidden="true">
-              <span className="moon-shape"></span>
-              <span className="star-shape star-one"></span>
-              <span className="star-shape star-two"></span>
-            </span>
-          ) : (
-            <span className="theme-icon day-icon" aria-hidden="true">
-              <span className="sun-shape"></span>
-              <span className="cloud-shape"></span>
-            </span>
-          )}
-        </button>
+          <button
+            type="button"
+            className={`theme-toggle ${theme}`}
+            onClick={toggleTheme}
+            aria-label={theme === "night" ? "Switch to day mode" : "Switch to night mode"}
+            title={theme === "night" ? "Switch to day mode" : "Switch to night mode"}
+          >
+            {theme === "night" ? (
+              <span className="theme-icon night-icon" aria-hidden="true">
+                <span className="moon-shape"></span>
+                <span className="star-shape star-one"></span>
+                <span className="star-shape star-two"></span>
+              </span>
+            ) : (
+              <span className="theme-icon day-icon" aria-hidden="true">
+                <span className="sun-shape"></span>
+                <span className="cloud-shape"></span>
+              </span>
+            )}
+          </button>
+        </div>
       </div>
+
+      <button
+        type="button"
+        className={`navbar-toggle-btn ${isOpen ? "active" : ""}`}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle navigation"
+      >
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </button>
 
     </nav>
   );

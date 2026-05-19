@@ -10,11 +10,19 @@ const navItems = [
   { label: "Settings", path: "/dashboard/settings" },
 ]
 
-function Sidebar() {
+function Sidebar({ isOpen, onClose }) {
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isOpen ? "sidebar-open" : ""}`}>
       <div className="sidebar-brand">
         <img src={logo} alt="Career Tracker Logo" className="logo-image" />
+        <button 
+          type="button" 
+          className="sidebar-close-btn" 
+          onClick={onClose} 
+          aria-label="Close sidebar"
+        >
+          &times;
+        </button>
       </div>
 
       <ul className="sidebar-nav">
@@ -24,12 +32,14 @@ function Sidebar() {
               to={item.path}
               end={item.path === "/dashboard"}
               className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}
+              onClick={onClose}
             >
               {item.label}
             </NavLink>
           </li>
         ))}
       </ul>
+
 
       <div className="sidebar-footer">
         <span className="sidebar-footer-dot" aria-hidden="true"></span>

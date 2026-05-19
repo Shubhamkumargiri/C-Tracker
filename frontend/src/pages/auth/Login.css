@@ -1,10 +1,11 @@
 .login-page{
-    height:100vh;
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
     background:var(--landing-bg);
     position:relative;
+    padding:80px 20px 40px;
 }
 
 /* Card */
@@ -12,12 +13,24 @@
 .login-card{
     background:var(--landing-surface);
     padding:40px;
-    width:350px;
+    width: min(380px, 100%);
     border-radius:12px;
     text-align:center;
     border:1px solid var(--landing-border);
     box-shadow:var(--landing-card-shadow);
 }
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 24px 16px;
+    }
+    .auth-back {
+        top: 16px;
+        left: 16px;
+        font-size: 0.8rem;
+    }
+}
+
 
 .auth-back{
     display:inline-flex;

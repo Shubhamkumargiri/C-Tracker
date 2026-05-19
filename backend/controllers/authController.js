@@ -9,6 +9,12 @@ const serializeUser = (user) => ({
   name: user.name,
   email: user.email,
   profileImage: user.profileImage || "",
+  integrations: user.integrations || { github: false, leetcode: false, linkedin: false },
+  githubUsername: user.githubUsername || "",
+  githubName: user.githubName || "",
+  leetcodeUsername: user.leetcodeUsername || "",
+  leetcodeName: user.leetcodeName || "",
+  linkedinMetrics: user.linkedinMetrics || { connections: 0, profileViewers: 0, postImpressions: 0 },
 })
 
 const createToken = (userId) =>
@@ -217,6 +223,112 @@ export const updateProfileImage = async (req, res) => {
 
     res.json({
       message: profileImage ? "Profile photo updated" : "Profile photo removed",
+      user: serializeUser(req.user),
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+async function fetchGithubName(username) {
+  try {
+    const response = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`, {
+      headers: {
+        "User-Agent": "Career-Tracker-App"
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data.name || data.login || "";
+    }
+  } catch (error) {
+    console.error("Failed to fetch public GitHub name:", error);
+  }
+  return "";
+}
+
+async function fetchLeetcodeName(username) {
+  try {
+    const response = await fetch("https://leetcode.com/graphql/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Referer: `https://leetcode.com/${username}/`,
+      },
+      body: JSON.stringify({
+        query: `
+          query getLeetcodeName($username: String!) {
+            matchedUser(username: $username) {
+              profile {
+                realName
+              }
+            }
+          }
+        `,
+        variables: { username },
+      }),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data.data?.matchedUser?.profile?.realName || "";
+    }
+  } catch (error) {
+    console.error("Failed to fetch public LeetCode name:", error);
+  }
+  return "";
+}
+
+export const updateIntegrations = async (req, res) => {
+  try {
+    const { key, connected = false, username = "", metrics = null } = req.body || {};
+
+    if (!["github", "leetcode", "linkedin"].includes(key)) {
+      return res.status(400).json({ message: "Invalid integration platform." });
+    }
+
+    if (!req.user.integrations) {
+      req.user.integrations = { github: false, leetcode: false, linkedin: false };
+    }
+
+    req.user.integrations[key] = connected;
+
+    if (key === "github") {
+      if (connected) {
+        const trimmedUser = String(username || "").trim();
+        req.user.githubUsername = trimmedUser;
+        req.user.githubName = await fetchGithubName(trimmedUser);
+      } else {
+        req.user.githubUsername = "";
+        req.user.githubName = "";
+      }
+    } else if (key === "leetcode") {
+      if (connected) {
+        const trimmedUser = String(username || "").trim();
+        req.user.leetcodeUsername = trimmedUser;
+        req.user.leetcodeName = await fetchLeetcodeName(trimmedUser);
+      } else {
+        req.user.leetcodeUsername = "";
+        req.user.leetcodeName = "";
+      }
+    } else if (key === "linkedin") {
+      if (connected && metrics) {
+        req.user.linkedinMetrics = {
+          connections: Number(metrics.connections || 0),
+          profileViewers: Number(metrics.profileViewers || 0),
+          postImpressions: Number(metrics.postImpressions || 0),
+        };
+      } else {
+        req.user.linkedinMetrics = { connections: 0, profileViewers: 0, postImpressions: 0 };
+      }
+    }
+
+    req.user.markModified("integrations");
+    req.user.markModified("linkedinMetrics");
+
+    await req.user.save();
+
+    res.json({
+      message: `Successfully ${connected ? "connected" : "disconnected"} ${key}`,
       user: serializeUser(req.user),
     });
   } catch (error) {

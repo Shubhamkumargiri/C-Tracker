@@ -13,7 +13,8 @@ function Integrations() {
 
       <div className="integration-cards">
 
-        <div className="integration-card">
+        <div className="integration-card integration-card-leetcode">
+          <div className="integration-badge">LC</div>
           <h3>LeetCode</h3>
           <p>
             Track solved problems, difficulty levels,
@@ -21,7 +22,8 @@ function Integrations() {
           </p>
         </div>
 
-        <div className="integration-card">
+        <div className="integration-card integration-card-github">
+          <div className="integration-badge">GH</div>
           <h3>GitHub</h3>
           <p>
             Monitor contributions, commits,
@@ -29,7 +31,8 @@ function Integrations() {
           </p>
         </div>
 
-        <div className="integration-card">
+        <div className="integration-card integration-card-linkedin">
+          <div className="integration-badge">IN</div>
           <h3>LinkedIn</h3>
           <p>
             Analyze profile activity,

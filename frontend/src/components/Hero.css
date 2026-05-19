@@ -1,13 +1,13 @@
 /* Hero Section */
 
 .hero{
-  height: 90vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--landing-text);
   text-align: center;
-  padding: 40px;
+  padding: 80px 20px 40px;
 }
 
 /* Hero Content */
@@ -78,3 +78,26 @@
   background: var(--landing-accent);
   color: var(--landing-accent-contrast);
 }
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: clamp(2rem, 8vw, 2.8rem);
+    line-height: 1.25;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    margin-bottom: 24px;
+  }
+  .hero-buttons {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 12px 20px;
+  }
+}
+

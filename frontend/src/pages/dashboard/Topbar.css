@@ -93,10 +93,34 @@
   transform: scale(1.03);
 }
 
+.topbar-toggle-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 22px;
+  height: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 12px;
+  align-self: center;
+}
+
+.topbar-toggle-btn .bar {
+  width: 100%;
+  height: 2px;
+  background-color: var(--dashboard-text);
+  border-radius: 4px;
+}
+
 @media (max-width: 960px) {
   .topbar {
-    flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .topbar-toggle-btn {
+    display: flex;
   }
 }
 
@@ -109,3 +133,4 @@
     padding: 14px 16px;
   }
 }
+

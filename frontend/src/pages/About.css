@@ -142,3 +142,23 @@
 span{
     color:var(--landing-text);
 }
+
+@media (max-width: 768px) {
+  .about-hero {
+    padding: 80px 20px 40px;
+  }
+  .about-hero h1 {
+    font-size: clamp(2rem, 8vw, 2.8rem);
+  }
+  .about-hero p {
+    font-size: 1rem;
+  }
+  .vision, .philosophy, .faq, .about-cta {
+    padding: 50px 20px;
+  }
+  .philo-card {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+

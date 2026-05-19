@@ -1,3 +1,5 @@
+import { getToken } from "./auth"
+
 function resolveApiBaseUrls() {
   const envBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "")
 
@@ -29,16 +31,34 @@ const API_BASE_URLS = resolveApiBaseUrls()
 export async function apiRequest(path, options = {}) {
   let response
   let lastNetworkError
+  let lastErrorData
+  const token = getToken()
 
   for (const baseUrl of API_BASE_URLS) {
     try {
-      response = await fetch(`${baseUrl}${path}`, {
+      const candidateResponse = await fetch(`${baseUrl}${path}`, {
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
           ...(options.headers || {}),
         },
         ...options,
       })
+      const candidateData = await candidateResponse.json().catch(() => null)
+
+      if (candidateResponse.ok) {
+        return candidateData ?? {}
+      }
+
+      response = candidateResponse
+      lastErrorData = candidateData
+
+      // Keep trying other configured base URLs when a candidate simply does not
+      // have the route. This helps during local development when ports vary.
+      if (candidateResponse.status === 404) {
+        continue
+      }
+
       break
     } catch (error) {
       lastNetworkError = error
@@ -51,7 +71,7 @@ export async function apiRequest(path, options = {}) {
     )
   }
 
-  const data = await response.json().catch(() => null)
+  const data = lastErrorData
 
   if (!response.ok) {
     if (data?.message || data?.error) {

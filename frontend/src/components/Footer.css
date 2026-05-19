@@ -54,6 +54,15 @@
   color:var(--landing-muted);
 }
 
+body[data-landing-theme="day"] .footer h2,
+body[data-landing-theme="day"] .footer h3,
+body[data-landing-theme="day"] .footer p,
+body[data-landing-theme="day"] .footer span,
+body[data-landing-theme="day"] .footer-bottom {
+  color: var(--landing-nav-link);
+}
+
 span{
   color:var(--landing-text);
 }
+

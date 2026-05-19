@@ -203,12 +203,12 @@ function Profile() {
         />
 
         <div className="photo-actions">
-          <button className="upload-btn" onClick={openFilePicker} disabled={isSavingPhoto}>
+          <button type="button" className="upload-btn" onClick={openFilePicker} disabled={isSavingPhoto}>
             {isSavingPhoto ? "Saving..." : "Add Profile Picture"}
           </button>
 
           {user?.profileImage && (
-            <button className="remove-btn" onClick={removeProfileImage} disabled={isSavingPhoto}>
+            <button type="button" className="remove-btn" onClick={removeProfileImage} disabled={isSavingPhoto}>
               Remove Photo
             </button>
           )}
@@ -217,7 +217,7 @@ function Profile() {
         {uploadError && <p className="profile-error">{uploadError}</p>}
 
         <div className="profile-buttons">
-          <button className="logout-btn" onClick={logout}>
+          <button type="button" className="logout-btn" onClick={logout}>
             Logout
           </button>
         </div>

@@ -4,11 +4,11 @@ import User from "../models/User.js";
 export const protect = async (req, res, next) => {
   try {
     const authorization = req.headers.authorization || "";
-    
+
     if (!authorization.startsWith("Bearer ")) {
       return res.status(401).json({ message: "Authentication required" });
     }
-    
+
     const token = authorization.replace("Bearer ", "").trim();
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);

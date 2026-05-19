@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import "./Topbar.css"
 import { getStoredUser, getUserInitials, subscribeToAuthSession } from "../../lib/auth"
 
-function Topbar() {
+function Topbar({ onToggleSidebar }) {
   const [user, setUser] = useState(() => getStoredUser())
   const firstName = user?.name?.split(" ")[0] || "Developer"
   const initials = getUserInitials(user?.name)
@@ -16,9 +16,21 @@ function Topbar() {
 
   return (
     <div className="topbar">
+      <button 
+        type="button" 
+        className="topbar-toggle-btn" 
+        onClick={onToggleSidebar}
+        aria-label="Toggle sidebar menu"
+      >
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </button>
+
       <div className="topbar-copy">
         <h3>Welcome back, {firstName}</h3>
       </div>
+
 
       <div className="profile">
         <div className="profile-text">

@@ -33,7 +33,7 @@ function About(){
 
         <p>
           We believe developers should have clear visibility
-          into their progress. CareerTracker acts like a career
+          into their progress. Career Tracker acts like a mirror
           for your coding journey.
         </p>
 
@@ -76,10 +76,10 @@ function About(){
 
         <div className="faq-item">
 
-          <h4>What is NeuroMirror?</h4>
+          <h4>What is Career Tracker?</h4>
 
           <p>
-            NeuroMirror is an AI-powered platform that analyzes
+            Career Tracker is an AI-powered platform that analyzes
             your coding activity and gives career insights.
           </p>
 
@@ -100,7 +100,7 @@ function About(){
 
         <div className="faq-item">
 
-          <h4>Is NeuroMirror free?</h4>
+          <h4>Is Career Tracker free?</h4>
 
           <p>
             Yes, we offer a free plan with basic analytics,

@@ -11,7 +11,7 @@ const getTransporter = () => {
       "Email service is not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and SMTP_FROM to backend/.env."
     );
   }
-  
+
   return nodemailer.createTransport({
     host: SMTP_HOST,
     port: Number(SMTP_PORT),

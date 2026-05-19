@@ -12,11 +12,14 @@ coverage/
 # Environment files and secrets
 .env
 .env.*
-!.env.example
-frontend/.env
-frontend/.env.*
+.env.example
 backend/.env
-backend/.env.*
+backend/.env.example
+frontend/.env
+frontend/.env.example
+*.env
+*.env.*
+
 
 # Logs
 logs/

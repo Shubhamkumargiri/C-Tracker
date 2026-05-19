@@ -115,6 +115,9 @@
 
 .analytics-card{
   padding:22px;
+  min-height:460px;
+  display:flex;
+  flex-direction:column;
 }
 
 .analytics-card.connected{
@@ -193,6 +196,42 @@
   gap:12px;
 }
 
+.analytics-card-body{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.analytics-rows-scroll{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding-right:6px;
+}
+
+.analytics-rows-scroll::-webkit-scrollbar{
+  width:8px;
+}
+
+.analytics-rows-scroll::-webkit-scrollbar-thumb{
+  background:rgba(255, 255, 255, 0.12);
+  border-radius:999px;
+}
+
+.analytics-identity{
+  display:grid;
+  gap:4px;
+  padding:14px 16px;
+  border-radius:12px;
+  background:var(--dashboard-surface-strong);
+  border:1px solid var(--dashboard-border);
+}
+
+.analytics-identity span{
+  color:var(--dashboard-muted);
+}
+
 .analytics-row{
   display:flex;
   align-items:center;
@@ -213,6 +252,11 @@
   line-height:1.6;
 }
 
+.analytics-error{
+  color:#ffb4b4;
+}
+
+.analytics-timeline-card,
 .analytics-prediction-card{
   margin-top:18px;
   padding:22px;
@@ -220,6 +264,57 @@
   border:1px solid var(--dashboard-border);
   box-shadow:var(--dashboard-shadow);
   border-radius:16px;
+}
+
+.timeline-graph-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:16px;
+}
+
+.timeline-graph-card{
+  min-width:0;
+  padding:16px;
+  border-radius:14px;
+  background:var(--dashboard-surface-strong);
+  border:1px solid var(--dashboard-border);
+}
+
+.timeline-graph-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.timeline-graph-head span,
+.timeline-graph-head small{
+  color:var(--dashboard-muted);
+  font-size:0.82rem;
+}
+
+.timeline-graph-head strong{
+  display:block;
+  margin-top:4px;
+  color:var(--dashboard-text);
+  font-size:1.8rem;
+}
+
+.timeline-svg{
+  width:100%;
+  height:auto;
+}
+
+.timeline-empty-state{
+  min-height:190px;
+  display:grid;
+  place-items:center;
+  color:var(--dashboard-muted);
+  border-radius:12px;
+  border:1px dashed var(--dashboard-border);
+  text-align:center;
+  padding:16px;
 }
 
 .analytics-section-heading{
@@ -267,7 +362,8 @@
 
 @media (max-width: 1100px){
   .analytics-header,
-  .analytics-metric-grid{
+  .analytics-metric-grid,
+  .timeline-graph-grid{
     grid-template-columns:1fr;
   }
 }

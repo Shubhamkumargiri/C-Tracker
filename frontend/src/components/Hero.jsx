@@ -17,7 +17,7 @@ function Hero() {
 
         <p>
           Connect your LeetCode, GitHub, and LinkedIn profiles.
-          NeuroMirror AI analyzes your consistency and predicts
+          Career Tracker AI analyzes your consistency and predicts
           your chances of landing top tech jobs.
         </p>
 

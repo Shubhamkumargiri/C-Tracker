@@ -15,6 +15,7 @@ function Dashboard(){
 
     return window.localStorage.getItem(DASHBOARD_THEME_KEY) || "day"
   })
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -34,13 +35,20 @@ function Dashboard(){
     <div className="dashboard-layout" data-dashboard-theme={theme}>
 
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Overlay mask for mobile drawer */}
+      <div 
+        className={`dashboard-sidebar-overlay ${sidebarOpen ? "active" : ""}`} 
+        onClick={() => setSidebarOpen(false)}
+        aria-hidden="true"
+      />
 
       {/* Main Area */}
       <div className="dashboard-main">
 
         {/* Topbar */}
-        <Topbar />
+        <Topbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
         {/* Dynamic Content */}
         <div className="dashboard-content">

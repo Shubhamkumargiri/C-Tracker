@@ -13,7 +13,7 @@ function HowItWorksSection() {
           <h3>Connect Profiles</h3>
           <p>
             Link your LeetCode, GitHub, and LinkedIn accounts
-            so NeuroMirror can track your activity.
+            so Career Tracker can track your activity.
           </p>
         </div>
 

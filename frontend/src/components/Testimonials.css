@@ -2,6 +2,7 @@
   color:var(--landing-text);
   padding:80px 0;
   text-align:center;
+  
 }
 
 .testimonials h2{
@@ -13,6 +14,7 @@
 .scroll-wrapper{
   overflow:hidden;
   width:100%;
+  background: var(--landing-bg);
 }
 
 .scroll-track{
@@ -23,17 +25,23 @@
 }
 
 .testimonial-card{
-  min-width:300px;
-  background:var(--landing-surface);
+  width:300px;
+  min-height:340px;
+  background:var(--landing-bg);
   padding:20px;
   border-radius:12px;
   border:1px solid var(--landing-border);
   box-shadow:var(--landing-card-shadow);
   transition:0.3s;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
 }
 
-.testimonial-card video{
+.testimonial-card img{
   width:100%;
+  height:160px;
+  object-fit:cover;
   border-radius:10px;
   margin-bottom:15px;
 }
@@ -41,6 +49,7 @@
 .testimonial-card p{
   color:var(--landing-muted);
   margin-bottom:10px;
+  flex-grow:1;
 }
 
 .testimonial-card h4{

@@ -2,8 +2,8 @@ import { useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import "./Dhome.css"
 import { getStoredUser } from "../../lib/auth"
+import { countConnectedIntegrations, getSavedIntegrations } from "../../lib/integrations"
 
-const INTEGRATIONS_KEY = "dashboard-integrations"
 const SETTINGS_KEY = "dashboard-settings"
 const DASHBOARD_THEME_KEY = "dashboard-theme"
 
@@ -24,7 +24,7 @@ function Dhome() {
   const navigate = useNavigate()
   const user = getStoredUser()
   const firstName = user?.name?.split(" ")[0] || "Developer"
-  const integrations = getSavedJson(INTEGRATIONS_KEY, {})
+  const integrations = getSavedIntegrations()
   const preferences = getSavedJson(SETTINGS_KEY, {
     weeklyDigest: true,
     interviewAlerts: true,
@@ -32,7 +32,7 @@ function Dhome() {
   })
   const dashboardTheme =
     typeof window === "undefined" ? "day" : window.localStorage.getItem(DASHBOARD_THEME_KEY) || "day"
-  const connectedCount = Object.values(integrations).filter(Boolean).length
+  const connectedCount = countConnectedIntegrations(integrations)
   const profileReady = Boolean(user?.name?.trim() && user?.email?.trim())
 
   const scoreCards = [

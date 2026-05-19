@@ -25,7 +25,7 @@ function CTA(){
         <Link to={dashboardPath} className="cta-secondary">
           View Dashboard Demo
         </Link>
-        
+
       </div>
 
     </section>
