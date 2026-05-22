@@ -3,7 +3,7 @@ import { getStoredUser } from "./auth";
 export const INTEGRATIONS_KEY = "dashboard-integrations";
 export const GITHUB_USERNAME_KEY = "dashboard-github-username";
 export const LEETCODE_USERNAME_KEY = "dashboard-leetcode-username";
-export const LINKEDIN_METRICS_KEY = "dashboard-linkedin-metrics";
+export const DEVPOST_USERNAME_KEY = "dashboard-devpost-username";
 
 export function getSavedIntegrations() {
   const user = getStoredUser();
@@ -32,7 +32,8 @@ export function saveIntegrations(nextState) {
 }
 
 export function countConnectedIntegrations(integrations) {
-  return Object.values(integrations).filter(Boolean).length;
+  const validKeys = ["github", "leetcode", "devpost"];
+  return validKeys.filter(key => integrations[key]).length;
 }
 
 export function getSavedGithubUsername() {
@@ -91,59 +92,30 @@ export function saveLeetcodeUsername(username) {
   window.localStorage.removeItem(LEETCODE_USERNAME_KEY);
 }
 
-export function getSavedLinkedinMetrics() {
+export function getSavedDevpostUsername() {
   const user = getStoredUser();
-  if (user?.linkedinMetrics) {
-    return {
-      connections: String(user.linkedinMetrics.connections ?? "").trim(),
-      profileViewers: String(user.linkedinMetrics.profileViewers ?? "").trim(),
-      postImpressions: String(user.linkedinMetrics.postImpressions ?? "").trim(),
-    };
+  if (user?.devpostUsername) {
+    return user.devpostUsername;
   }
 
   if (typeof window === "undefined") {
-    return {
-      connections: "",
-      profileViewers: "",
-      postImpressions: "",
-    };
+    return "";
   }
 
-  try {
-    const raw = window.localStorage.getItem(LINKEDIN_METRICS_KEY);
-    const parsed = raw ? JSON.parse(raw) : {};
-
-    return {
-      connections: String(parsed.connections ?? "").trim(),
-      profileViewers: String(parsed.profileViewers ?? "").trim(),
-      postImpressions: String(parsed.postImpressions ?? "").trim(),
-    };
-  } catch {
-    return {
-      connections: "",
-      profileViewers: "",
-      postImpressions: "",
-    };
-  }
+  return window.localStorage.getItem(DEVPOST_USERNAME_KEY)?.trim() || "";
 }
 
-export function saveLinkedinMetrics(metrics) {
+export function saveDevpostUsername(username) {
   if (typeof window === "undefined") {
     return;
   }
 
-  const normalizedMetrics = {
-    connections: String(metrics?.connections ?? "").trim(),
-    profileViewers: String(metrics?.profileViewers ?? "").trim(),
-    postImpressions: String(metrics?.postImpressions ?? "").trim(),
-  };
+  const normalizedUsername = String(username || "").trim();
 
-  const hasValues = Object.values(normalizedMetrics).some(Boolean);
-
-  if (hasValues) {
-    window.localStorage.setItem(LINKEDIN_METRICS_KEY, JSON.stringify(normalizedMetrics));
+  if (normalizedUsername) {
+    window.localStorage.setItem(DEVPOST_USERNAME_KEY, normalizedUsername);
     return;
   }
 
-  window.localStorage.removeItem(LINKEDIN_METRICS_KEY);
+  window.localStorage.removeItem(DEVPOST_USERNAME_KEY);
 }

@@ -25,6 +25,11 @@
 .logo-image {
   width: 142px;
   height: auto;
+  transition: filter 0.3s ease;
+}
+
+.dashboard-layout[data-dashboard-theme="day"] .logo-image {
+  filter: invert(1);
 }
 
 .sidebar-brand p {
@@ -98,9 +103,23 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--dashboard-accent), var(--dashboard-accent-deep));
-  box-shadow: 0 0 12px var(--dashboard-accent-soft);
   flex-shrink: 0;
+  animation: blink-red-blue 1.2s infinite ease-in-out;
+}
+
+@keyframes blink-red-blue {
+  0%, 40% {
+    background: #00f3ff;
+    box-shadow: 0 0 14px #00f3ff, 0 0 24px rgba(0, 243, 255, 0.6);
+  }
+  50%, 90% {
+    background: #ff2a5f;
+    box-shadow: 0 0 14px #ff2a5f, 0 0 24px rgba(255, 42, 95, 0.6);
+  }
+  100% {
+    background: #00f3ff;
+    box-shadow: 0 0 14px #00f3ff, 0 0 24px rgba(0, 243, 255, 0.6);
+  }
 }
 
 .sidebar-footer-copy {

@@ -1,0 +1,400 @@
+/* CTAI.css - Futuristic Jarvis-like styling with Draggable Floating FAB & Docked Sidebar */
+
+/* Floating Action Orb Button (FAB) */
+.ctai-floating-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(10, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  z-index: 1000;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.35);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  user-select: none;
+  touch-action: none; /* Prevents screen scrolling during drag operations */
+}
+
+.ctai-floating-icon:hover {
+  transform: scale(1.08) rotate(5deg);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+}
+
+.ctai-floating-icon:active, .ctai-floating-icon.ctai-orb-dragging {
+  cursor: grabbing;
+  transform: scale(1.1) rotate(0deg);
+  box-shadow: 0 0 35px rgba(0, 255, 255, 0.8);
+}
+
+.ctai-floating-icon.ctai-icon-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.5);
+}
+
+.ctai-core {
+  width: 22px;
+  height: 22px;
+  background: radial-gradient(circle, #00ffff, #0055ff);
+  border-radius: 50%;
+  box-shadow: 0 0 12px #00ffff;
+  z-index: 2;
+}
+
+.ctai-ring, .ctai-ring-2 {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 255, 255, 0.55);
+  animation: spin linear infinite;
+}
+
+.ctai-ring {
+  width: 42px;
+  height: 42px;
+  border-top-color: transparent;
+  animation-duration: 3.5s;
+}
+
+.ctai-ring-2 {
+  width: 52px;
+  height: 52px;
+  border-bottom-color: transparent;
+  animation-duration: 5.5s;
+  animation-direction: reverse;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* Speaking Animation for Floating Orb */
+.ctai-floating-icon.speaking .ctai-core {
+  animation: pulse-core 0.8s infinite alternate;
+}
+.ctai-floating-icon.speaking {
+  box-shadow: 0 0 35px rgba(0, 255, 255, 0.9);
+}
+
+@keyframes pulse-core {
+  0% { transform: scale(1); box-shadow: 0 0 10px #0ff; }
+  100% { transform: scale(1.35); box-shadow: 0 0 25px #0ff, 0 0 35px #0055ff; }
+}
+
+
+/* Main CTAI App Panel Base Container */
+.ctai-container {
+  display: flex;
+  flex-direction: column;
+  background: rgba(8, 4, 18, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #e2d9f3;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(176, 38, 255, 0.05);
+  overflow: hidden;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+/* Docked sidebar styles */
+.ctai-container.ctai-docked-mode {
+  border-radius: 0;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  border-left: 1.5px solid rgba(176, 38, 255, 0.3);
+}
+
+
+/* CTAI Header Styling */
+.ctai-header {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(176, 38, 255, 0.2);
+  background: rgba(17, 10, 29, 0.6);
+  user-select: none;
+}
+
+.ctai-header-title {
+  font-size: 1.15rem;
+  font-weight: 650;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  color: #f3eaff;
+  text-shadow: 0 0 10px rgba(176, 38, 255, 0.4);
+}
+
+.ctai-logo-dot {
+  width: 10px;
+  height: 10px;
+  background: #b026ff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #b026ff, 0 0 20px #00ffff;
+  animation: pulsate-dot 2s infinite alternate;
+}
+
+@keyframes pulsate-dot {
+  0% { transform: scale(1); box-shadow: 0 0 6px #b026ff; }
+  100% { transform: scale(1.2); box-shadow: 0 0 14px #b026ff, 0 0 20px #00ffff; }
+}
+
+.ctai-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Close Control Button */
+.ctai-close-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(176, 38, 255, 0.15);
+  color: #c9bcf2;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ctai-close-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #ff9999;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+}
+
+
+/* Chat Log Area */
+.ctai-chat-area {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: rgba(8, 4, 18, 0.4);
+}
+
+/* Custom Scrollbar for Chat */
+.ctai-chat-area::-webkit-scrollbar {
+  width: 6px;
+  background: transparent !important;
+}
+.ctai-chat-area::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+.ctai-chat-area::-webkit-scrollbar-thumb {
+  background: rgba(176, 38, 255, 0.12) !important;
+  border-radius: 10px;
+}
+.ctai-chat-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(176, 38, 255, 0.35) !important;
+}
+
+.ctai-message-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.ctai-message-wrapper.ctai {
+  justify-content: flex-start;
+}
+
+.ctai-message-wrapper.user {
+  justify-content: flex-end;
+}
+
+.ctai-message {
+  max-width: 82%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  line-height: 1.45;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.ctai-message-wrapper.ctai .ctai-message {
+  background: rgba(176, 38, 255, 0.08);
+  border: 1px solid rgba(176, 38, 255, 0.22);
+  border-bottom-left-radius: 2px;
+  color: #ece2ff;
+}
+
+.ctai-message-wrapper.user .ctai-message {
+  background: linear-gradient(135deg, #b026ff, #502d8c);
+  border-bottom-right-radius: 2px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(176, 38, 255, 0.2);
+}
+
+
+/* Messaging Input Bar Styling */
+.ctai-input-area {
+  padding: 16px 20px;
+  display: flex;
+  gap: 10px;
+  background: rgba(12, 6, 26, 0.85);
+  border-top: 1px solid rgba(176, 38, 255, 0.18);
+}
+
+.ctai-input {
+  flex: 1;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(176, 38, 255, 0.2);
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #fff;
+  outline: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.ctai-input:focus {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(176, 38, 255, 0.55);
+  box-shadow: 0 0 10px rgba(176, 38, 255, 0.25);
+}
+
+.ctai-input::placeholder {
+  color: #887fa5;
+}
+
+.ctai-mic-btn, .ctai-send-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(176, 38, 255, 0.2);
+  color: #fff;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.15rem;
+  transition: all 0.2s ease;
+}
+
+.ctai-mic-btn:hover, .ctai-send-btn:hover {
+  background: rgba(176, 38, 255, 0.2);
+  border-color: rgba(176, 38, 255, 0.55);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(176, 38, 255, 0.25);
+}
+
+.ctai-mic-btn.listening {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  animation: pulse-mic 1s infinite alternate;
+}
+
+@keyframes pulse-mic {
+  0% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
+  100% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.8); }
+}
+
+.ctai-stop-btn {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1.5px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.15rem;
+  transition: all 0.2s ease;
+}
+
+.ctai-stop-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+}
+
+
+/* Markdown Styling inside Message Bubbles */
+.ctai-message p {
+  margin: 0 0 10px 0;
+}
+.ctai-message p:last-child {
+  margin-bottom: 0;
+}
+.ctai-message h1, .ctai-message h2, .ctai-message h3, .ctai-message h4 {
+  margin: 12px 0 8px 0;
+  font-weight: 650;
+  color: #f3eaff;
+  line-height: 1.25;
+}
+.ctai-message h1:first-child, .ctai-message h2:first-child, .ctai-message h3:first-child {
+  margin-top: 0;
+}
+.ctai-message ul, .ctai-message ol {
+  margin: 0 0 10px 0;
+  padding-left: 20px;
+}
+.ctai-message li {
+  margin-bottom: 5px;
+}
+.ctai-message strong {
+  font-weight: 700;
+  color: #fff;
+}
+
+
+/* Resize Borders Handle (Left border only for docked panel) */
+.ctai-resize-handle {
+  position: absolute;
+  background: transparent;
+  z-index: 10;
+  transition: background-color 0.25s ease;
+}
+
+.ctai-resize-handle-left {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: ew-resize;
+}
+
+/* Hover glow for resize handle */
+.ctai-resize-handle:hover {
+  background: rgba(176, 38, 255, 0.35);
+}
+
+
+/* Mobiles/Tablets adjustments */
+@media (max-width: 600px) {
+  /* On smaller devices, keep CTAI docked to cover screen width */
+  .ctai-container.ctai-docked-mode {
+    width: 100% !important;
+    right: -100%;
+    border-left: none;
+  }
+  
+  .ctai-container.ctai-docked-mode.ctai-open {
+    right: 0 !important;
+  }
+  
+  .ctai-resize-handle {
+    display: none !important; /* Disable manual resizing on narrow mobile viewports */
+  }
+}

@@ -1,8 +1,15 @@
-import { useMemo } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import "./Dhome.css"
 import { getStoredUser } from "../../lib/auth"
-import { countConnectedIntegrations, getSavedIntegrations } from "../../lib/integrations"
+import { apiRequest } from "../../lib/api"
+import { 
+  countConnectedIntegrations, 
+  getSavedIntegrations,
+  getSavedGithubUsername,
+  getSavedDevpostUsername,
+  getSavedLeetcodeUsername,
+} from "../../lib/integrations"
 
 const SETTINGS_KEY = "dashboard-settings"
 const DASHBOARD_THEME_KEY = "dashboard-theme"
@@ -32,79 +39,137 @@ function Dhome() {
   })
   const dashboardTheme =
     typeof window === "undefined" ? "day" : window.localStorage.getItem(DASHBOARD_THEME_KEY) || "day"
+  
   const connectedCount = countConnectedIntegrations(integrations)
   const profileReady = Boolean(user?.name?.trim() && user?.email?.trim())
 
+  const githubUsername = getSavedGithubUsername()
+  const leetcodeUsername = getSavedLeetcodeUsername()
+  const devpostUsername = getSavedDevpostUsername()
+
+  const [githubAnalytics, setGithubAnalytics] = useState(null)
+  const [leetcodeAnalytics, setLeetcodeAnalytics] = useState(null)
+  const [devpostAnalytics, setDevpostAnalytics] = useState(null)
+
+  useEffect(() => {
+    if (integrations.github && githubUsername) {
+      apiRequest(`/api/github/analytics/${encodeURIComponent(githubUsername)}`).then(setGithubAnalytics).catch(() => {})
+    }
+    if (integrations.leetcode && leetcodeUsername) {
+      apiRequest(`/api/leetcode/analytics/${encodeURIComponent(leetcodeUsername)}`).then(setLeetcodeAnalytics).catch(() => {})
+    }
+    if (integrations.devpost && devpostUsername) {
+      apiRequest(`/api/devpost/analytics/${encodeURIComponent(devpostUsername)}`).then(setDevpostAnalytics).catch(() => {})
+    }
+  }, [integrations, githubUsername, leetcodeUsername, devpostUsername])
+
+  const leetcodeRealScore = leetcodeAnalytics ? Math.min(100, Math.floor((leetcodeAnalytics.totalSolved / 3) + (leetcodeAnalytics.streak * 2))) : 0;
+  const githubRealScore = githubAnalytics ? Math.min(100, Math.floor((githubAnalytics.commits / 5) + (githubAnalytics.repositories * 5))) : 0;
+  const devpostRealScore = devpostAnalytics ? Math.min(100, Math.floor((devpostAnalytics.projects * 25) + (devpostAnalytics.hackathons * 10))) : 0;
+
+  const readinessScore = Math.min(100, Math.floor(
+    (leetcodeRealScore * 0.35) + 
+    (githubRealScore * 0.45) + 
+    (devpostRealScore * 0.20)
+  )) || 0;
+
+  const consistencyScore = Math.min(100, Math.floor(
+    (leetcodeAnalytics?.streak > 5 ? 40 : (leetcodeAnalytics?.streak * 8 || 0)) +
+    (githubAnalytics?.commits > 50 ? 60 : (githubAnalytics?.commits || 0))
+  )) || 0;
+
   const scoreCards = [
-    { label: "LeetCode solved", value: "320", note: "+18 this week", accent: "pink" },
-    { label: "GitHub commits", value: "95", note: "12 streak days", accent: "blue" },
-    { label: "LinkedIn reach", value: "540", note: "+42 profile views", accent: "gold" },
-    { label: "Consistency score", value: "82%", note: "Top 14% momentum", accent: "violet" },
+    { 
+      label: "LeetCode solved", 
+      value: leetcodeAnalytics?.totalSolved || "0", 
+      note: leetcodeAnalytics ? `${leetcodeAnalytics.streak} day streak` : "Not connected", 
+      accent: "pink" 
+    },
+    { 
+      label: "GitHub commits", 
+      value: githubAnalytics?.commits || "0", 
+      note: githubAnalytics ? `${githubAnalytics.repositories} active repos` : "Not connected", 
+      accent: "blue" 
+    },
+    { 
+      label: "Devpost projects", 
+      value: devpostAnalytics?.projects || "0", 
+      note: devpostAnalytics ? `${devpostAnalytics.hackathons} hackathons` : "Not connected", 
+      accent: "gold" 
+    },
+    { 
+      label: "Consistency score", 
+      value: `${consistencyScore}%`, 
+      note: consistencyScore > 50 ? "Strong momentum" : "Needs momentum", 
+      accent: "violet" 
+    },
   ]
 
-  const actionItems = [
-    "Finish one system design case study",
-    "Update one GitHub project this week",
-    "Send 3 networking messages",
-  ]
+  const actionItems = []
+  if (!integrations.github) actionItems.push("Connect your GitHub account")
+  else if (githubAnalytics?.commits < 10) actionItems.push("Push a new commit to an active repository")
 
-  const quickActions = useMemo(
+  if (!integrations.leetcode) actionItems.push("Connect your LeetCode account")
+  else if (leetcodeAnalytics?.streak < 2) actionItems.push("Solve at least one LeetCode problem today")
+
+  if (actionItems.length === 0) {
+    actionItems.push("Update your resume using the Resume Builder")
+    actionItems.push("Apply to one new opportunity this week")
+    actionItems.push("Read an article on System Design")
+  }
+
+  const careerTools = useMemo(
     () => [
       {
-        label: "Open analytics",
-        value: "Review weekly trends and AI prediction",
-        cta: "View analytics",
-        onClick: () => navigate("/dashboard/analytics"),
+        label: "ATS Resume Builder",
+        value: "Generate a perfectly formatted resume instantly",
+        cta: "Open Builder",
+        onClick: () => navigate("/dashboard/resume"),
       },
       {
-        label: connectedCount > 0 ? "Manage integrations" : "Connect accounts",
-        value:
-          connectedCount > 0
-            ? `${connectedCount} platform${connectedCount > 1 ? "s" : ""} connected so far`
-            : "Sync GitHub, LeetCode, and LinkedIn",
-        cta: connectedCount > 0 ? "Manage" : "Connect now",
+        label: "Cover Letter Generator",
+        value: "AI-generated cover letters tailored to jobs",
+        cta: "Coming Soon",
+        onClick: () => {},
+      },
+      {
+        label: "Interview Prep",
+        value: "Mock interviews based on your tech stack",
+        cta: "Coming Soon",
+        onClick: () => {},
+      },
+    ],
+    [navigate]
+  )
+
+  const profileChecklist = useMemo(
+    () => [
+      {
+        title: "Developer Accounts",
+        detail:
+          connectedCount >= 3
+            ? "All major platforms connected. Your analytics are fully powered."
+            : "Connect GitHub, LeetCode, and Devpost for accurate predictions.",
+        action: connectedCount >= 3 ? "Manage" : "Connect",
         onClick: () => navigate("/dashboard/integrations"),
+        done: connectedCount >= 3,
       },
       {
-        label: profileReady ? "Refine profile" : "Complete profile",
-        value: profileReady ? "Polish your recruiter-facing details" : "Add your name and email details",
-        cta: "Open settings",
+        title: "Resume Readiness",
+        detail: "Build and download your ATS-friendly resume to start applying.",
+        action: "Build",
+        onClick: () => navigate("/dashboard/resume"),
+        done: false, // You could link this to a real state later
+      },
+      {
+        title: "Profile Details",
+        detail: profileReady ? "Your contact details are set up." : "Add your name, country, and phone number.",
+        action: "Update",
         onClick: () => navigate("/dashboard/settings"),
+        done: profileReady,
       },
     ],
     [connectedCount, navigate, profileReady]
-  )
-
-  const recentItems = useMemo(
-    () => [
-      {
-        title: "Integrations",
-        detail:
-          connectedCount > 0
-            ? `${connectedCount} connected account${connectedCount > 1 ? "s are" : " is"} feeding your dashboard flow.`
-            : "No connected accounts yet. Start with GitHub or LinkedIn to unlock better signals.",
-        action: connectedCount > 0 ? "Review" : "Connect",
-        onClick: () => navigate("/dashboard/integrations"),
-      },
-      {
-        title: "Workspace",
-        detail:
-          dashboardTheme === "night"
-            ? "Night mode is active for a more focused dashboard view."
-            : "Day mode is active with the same dashboard cards on a clean white backdrop.",
-        action: "Change",
-        onClick: () => navigate("/dashboard/settings"),
-      },
-      {
-        title: "Preferences",
-        detail: preferences.weeklyDigest || preferences.interviewAlerts || preferences.publicProfile
-          ? "Your reminders and visibility preferences are set up and ready."
-          : "Your reminders are turned off. Update preferences to keep your momentum on track.",
-        action: "Update",
-        onClick: () => navigate("/dashboard/settings"),
-      },
-    ],
-    [connectedCount, dashboardTheme, navigate, preferences.interviewAlerts, preferences.publicProfile, preferences.weeklyDigest]
   )
 
   return (
@@ -121,26 +186,28 @@ function Dhome() {
         <div className="readiness-card">
           <div className="readiness-header">
             <span>Job readiness</span>
-            <strong>76%</strong>
+            <strong>{readinessScore}%</strong>
           </div>
 
           <div className="meter">
-            <div className="meter-fill"></div>
+            <div className="meter-fill" style={{ width: `${readinessScore}%` }}></div>
           </div>
 
           <p className="readiness-copy">
-            Your profile is improving. The next gains will come from stronger project presentation and better interview preparation.
+            {readinessScore > 75 
+              ? "Your profile is highly competitive! Keep building and networking to secure strong roles." 
+              : "Your profile is improving. Connect more accounts and stay consistent to boost your score."}
           </p>
 
           <div className="readiness-foot">
             <div>
               <small>Strength area</small>
-              <strong>Consistency</strong>
+              <strong>{consistencyScore > 60 ? "Consistency" : "Learning"}</strong>
             </div>
 
             <div>
               <small>Needs attention</small>
-              <strong>Networking</strong>
+              <strong>{connectedCount < 3 ? "Integrations" : "Networking"}</strong>
             </div>
           </div>
         </div>
@@ -166,15 +233,15 @@ function Dhome() {
           <div className="insight-card">
             <p className="insight-title">Strengths</p>
             <ul>
-              <li>Good problem-solving consistency</li>
-              <li>Healthy GitHub activity</li>
-              <li>Steady progress over the last 21 days</li>
+              {githubAnalytics?.commits > 50 ? <li>High GitHub commit volume</li> : <li>Building foundational code skills</li>}
+              {leetcodeAnalytics?.totalSolved > 50 ? <li>Solid problem-solving baseline</li> : <li>Working on algorithmic thinking</li>}
+              {devpostAnalytics?.projects > 0 ? <li>Demonstrated hackathon capability</li> : <li>Expanding project portfolio</li>}
             </ul>
 
             <p className="insight-title">Improve next</p>
             <ul>
-              <li>Show clearer project outcomes</li>
-              <li>Practice system design regularly</li>
+              {!integrations.leetcode ? <li>Connect LeetCode to track problem-solving</li> : <li>Practice more Medium-level questions</li>}
+              {!integrations.devpost ? <li>Join a Devpost hackathon for real-world XP</li> : <li>Showcase clear project outcomes</li>}
               <li>Build a simple networking routine</li>
             </ul>
 
@@ -201,13 +268,13 @@ function Dhome() {
       <section className="dashboard-lower">
         <div className="quick-card">
           <div className="section-heading">
-            <span>Quick actions</span>
-            <h2>Useful next steps</h2>
+            <span>Career tools</span>
+            <h2>Accelerate your job search</h2>
           </div>
 
           <div className="quick-list">
-            {quickActions.map((item) => (
-              <button key={item.label} type="button" className="quick-item" onClick={item.onClick}>
+            {careerTools.map((item) => (
+              <button key={item.label} type="button" className="quick-item" onClick={item.onClick} style={{ opacity: item.cta === "Coming Soon" ? 0.6 : 1, cursor: item.cta === "Coming Soon" ? "default" : "pointer" }}>
                 <div className="quick-item-copy">
                   <strong>{item.label}</strong>
                   <span>{item.value}</span>
@@ -220,12 +287,12 @@ function Dhome() {
 
         <div className="recent-card">
           <div className="section-heading">
-            <span>Recent activity</span>
-            <h2>Latest updates</h2>
+            <span>Profile readiness</span>
+            <h2>Application checklist</h2>
           </div>
 
           <div className="recent-list">
-            {recentItems.map((item) => (
+            {profileChecklist.map((item) => (
               <div key={item.title} className="recent-item">
                 <div className="recent-item-copy">
                   <strong>{item.title}</strong>

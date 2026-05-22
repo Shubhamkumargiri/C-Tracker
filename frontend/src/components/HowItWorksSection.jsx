@@ -12,7 +12,7 @@ function HowItWorksSection() {
           <div className="step">1</div>
           <h3>Connect Profiles</h3>
           <p>
-            Link your LeetCode, GitHub, and LinkedIn accounts
+            Link your LeetCode, GitHub, and Devpost accounts
             so Career Tracker can track your activity.
           </p>
         </div>
@@ -22,7 +22,7 @@ function HowItWorksSection() {
           <h3>AI Analyzes Progress</h3>
           <p>
             Our AI evaluates your coding consistency,
-            projects, and professional growth.
+            projects, and hackathon submissions.
           </p>
         </div>
 

@@ -21,22 +21,28 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: ""
         },
+
+        country: {
+            type: String,
+            default: ""
+        },
+
+        phone: {
+            type: String,
+            default: ""
+        },
         
         // Persisted Integrations Data
         integrations: {
             github: { type: Boolean, default: false },
             leetcode: { type: Boolean, default: false },
-            linkedin: { type: Boolean, default: false }
+            devpost: { type: Boolean, default: false }
         },
         githubUsername: { type: String, default: "" },
         githubName: { type: String, default: "" },
         leetcodeUsername: { type: String, default: "" },
         leetcodeName: { type: String, default: "" },
-        linkedinMetrics: {
-            connections: { type: Number, default: 0 },
-            profileViewers: { type: Number, default: 0 },
-            postImpressions: { type: Number, default: 0 }
-        },
+        devpostUsername: { type: String, default: "" },
 
         resetPasswordToken: {
             type: String

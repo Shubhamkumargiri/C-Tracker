@@ -56,7 +56,7 @@
   background:linear-gradient(90deg, #ffb347, #ffd37e);
 }
 
-.integration-card.linkedin::before{
+.integration-card.devpost::before{
   background:linear-gradient(90deg, #44a0cf, #83dcff);
 }
 
@@ -107,7 +107,7 @@
   min-width:108px;
   padding:6px 10px;
   border-radius:999px;
-  background:rgba(255, 255, 255, 0.04);
+  background:var(--dashboard-surface-strong);
   border:1px solid var(--dashboard-border);
   color:var(--dashboard-muted);
   font-size:0.78rem;
@@ -115,9 +115,9 @@
 }
 
 .integration-status.connected{
-  color:#dff7ea;
-  background:rgba(30, 124, 76, 0.18);
-  border-color:rgba(59, 175, 115, 0.34);
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
 }
 
 .integration-card p{
@@ -223,7 +223,7 @@
 }
 
 .integration-enter-btn{
-  background:rgba(255, 255, 255, 0.06);
+  background:var(--dashboard-surface-strong);
 }
 
 .integration-disconnect-row{

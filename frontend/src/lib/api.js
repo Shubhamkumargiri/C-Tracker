@@ -27,8 +27,24 @@ function resolveApiBaseUrls() {
 }
 
 const API_BASE_URLS = resolveApiBaseUrls()
+const apiCache = new Map()
 
 export async function apiRequest(path, options = {}) {
+  const isGet = (!options.method || options.method.toUpperCase() === "GET");
+  const isAnalytics = path.includes("/api/github/analytics") || 
+                      path.includes("/api/leetcode/analytics") || 
+                      path.includes("/api/devpost/analytics");
+                      
+  if (isGet && isAnalytics) {
+    if (apiCache.has(path)) {
+      const cached = apiCache.get(path);
+      if (Date.now() - cached.timestamp < 1000 * 60 * 5) {
+        return cached.promise;
+      }
+    }
+  }
+
+  const doRequest = async () => {
   let response
   let lastNetworkError
   let lastErrorData
@@ -88,4 +104,16 @@ export async function apiRequest(path, options = {}) {
   }
 
   return data ?? {}
+  };
+
+  const promise = doRequest();
+  
+  if (isGet && isAnalytics) {
+    apiCache.set(path, { promise, timestamp: Date.now() });
+    promise.catch(() => {
+      apiCache.delete(path);
+    });
+  }
+
+  return promise;
 }

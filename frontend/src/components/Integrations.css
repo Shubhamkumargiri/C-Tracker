@@ -54,8 +54,8 @@
   background:linear-gradient(90deg, #7ea7ff, #b0c8ff);
 }
 
-.integration-card-linkedin::before{
-  background:linear-gradient(90deg, #44a0cf, #83dcff);
+.integration-card-devpost::before{
+  background:linear-gradient(90deg, #00f2fe, #4facfe);
 }
 
 .integration-badge{

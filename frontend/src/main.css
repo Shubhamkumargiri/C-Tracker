@@ -60,4 +60,35 @@ body{
   background: var(--landing-bg);
   color: var(--landing-text);
   transition: background 0.35s ease, color 0.35s ease;
+  overflow-x: hidden;
 }
+
+/* Global Scrollbar Customization - Fully Transparent & Glassmorphic */
+/* For Webkit browsers (Chrome, Safari, Edge, Opera, etc.) */
+*::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(176, 38, 255, 0.12) !important; /* Extremely subtle neon purple transparent thumb */
+  border-radius: 99px !important;
+  border: 1px solid transparent !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(176, 38, 255, 0.35) !important; /* Slightly visible on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(176, 38, 255, 0.12) transparent !important;
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* For legacy IE/Edge */
+}
+

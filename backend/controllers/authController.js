@@ -9,12 +9,14 @@ const serializeUser = (user) => ({
   name: user.name,
   email: user.email,
   profileImage: user.profileImage || "",
-  integrations: user.integrations || { github: false, leetcode: false, linkedin: false },
+  country: user.country || "",
+  phone: user.phone || "",
+  integrations: user.integrations || { github: false, leetcode: false, devpost: false },
   githubUsername: user.githubUsername || "",
   githubName: user.githubName || "",
   leetcodeUsername: user.leetcodeUsername || "",
   leetcodeName: user.leetcodeName || "",
-  linkedinMetrics: user.linkedinMetrics || { connections: 0, profileViewers: 0, postImpressions: 0 },
+  devpostUsername: user.devpostUsername || "",
 })
 
 const createToken = (userId) =>
@@ -280,14 +282,14 @@ async function fetchLeetcodeName(username) {
 
 export const updateIntegrations = async (req, res) => {
   try {
-    const { key, connected = false, username = "", metrics = null } = req.body || {};
+    const { key, connected = false, username = "" } = req.body || {};
 
-    if (!["github", "leetcode", "linkedin"].includes(key)) {
+    if (!["github", "leetcode", "devpost"].includes(key)) {
       return res.status(400).json({ message: "Invalid integration platform." });
     }
 
     if (!req.user.integrations) {
-      req.user.integrations = { github: false, leetcode: false, linkedin: false };
+      req.user.integrations = { github: false, leetcode: false, devpost: false };
     }
 
     req.user.integrations[key] = connected;
@@ -310,20 +312,15 @@ export const updateIntegrations = async (req, res) => {
         req.user.leetcodeUsername = "";
         req.user.leetcodeName = "";
       }
-    } else if (key === "linkedin") {
-      if (connected && metrics) {
-        req.user.linkedinMetrics = {
-          connections: Number(metrics.connections || 0),
-          profileViewers: Number(metrics.profileViewers || 0),
-          postImpressions: Number(metrics.postImpressions || 0),
-        };
+    } else if (key === "devpost") {
+      if (connected) {
+        req.user.devpostUsername = String(username || "").trim();
       } else {
-        req.user.linkedinMetrics = { connections: 0, profileViewers: 0, postImpressions: 0 };
+        req.user.devpostUsername = "";
       }
     }
 
     req.user.markModified("integrations");
-    req.user.markModified("linkedinMetrics");
 
     await req.user.save();
 

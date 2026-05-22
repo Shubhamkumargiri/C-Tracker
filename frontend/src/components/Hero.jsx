@@ -16,7 +16,7 @@ function Hero() {
         </h1>
 
         <p>
-          Connect your LeetCode, GitHub, and LinkedIn profiles.
+          Connect your LeetCode, GitHub, and Devpost profiles.
           Career Tracker AI analyzes your consistency and predicts
           your chances of landing top tech jobs.
         </p>

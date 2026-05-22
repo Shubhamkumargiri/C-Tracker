@@ -50,23 +50,22 @@ function normalizeLeetcodeStats(stats = {}) {
   };
 }
 
-function calculateLinkedinScore(stats = {}) {
+function calculateDevpostScore(stats = {}) {
   return Math.min(
     100,
     Math.round(
-      toNumber(stats.connections) / 20 +
-        toNumber(stats.profileViewers) / 10 +
-        toNumber(stats.postImpressions) / 100
+      toNumber(stats.projects) * 25 +
+        toNumber(stats.hackathons) * 10
     )
   );
 }
 
-function normalizeLinkedinStats(stats = {}) {
+function normalizeDevpostStats(stats = {}) {
   return {
-    connections: toNumber(stats.connections),
-    profileViewers: toNumber(stats.profileViewers),
-    postImpressions: toNumber(stats.postImpressions),
-    profileScore: calculateLinkedinScore(stats),
+    projects: toNumber(stats.projects),
+    hackathons: toNumber(stats.hackathons),
+    followers: toNumber(stats.followers),
+    profileScore: calculateDevpostScore(stats),
   };
 }
 
@@ -81,8 +80,8 @@ function normalizeStats(stats = {}) {
     normalized.leetcode = normalizeLeetcodeStats(stats.leetcode);
   }
 
-  if (stats.linkedin) {
-    normalized.linkedin = normalizeLinkedinStats(stats.linkedin);
+  if (stats.devpost) {
+    normalized.devpost = normalizeDevpostStats(stats.devpost);
   }
 
   return normalized;

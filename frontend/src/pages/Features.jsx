@@ -102,7 +102,7 @@ function Features(){
 
                 <div className="integration-card">LeetCode</div>
 
-                <div className="integration-card">LinkedIn</div>
+                <div className="integration-card">Devpost</div>
 
                 </div>
 

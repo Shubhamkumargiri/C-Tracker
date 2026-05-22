@@ -6,6 +6,8 @@ const navItems = [
   { label: "Overview", path: "/dashboard" },
   { label: "Analytics", path: "/dashboard/analytics" },
   { label: "Integrations", path: "/dashboard/integrations" },
+  { label: "Resume", path: "/dashboard/resume" },
+  { label: "Job Matcher", path: "/dashboard/job-matcher" },
   { label: "Profile", path: "/dashboard/profile" },
   { label: "Settings", path: "/dashboard/settings" },
 ]

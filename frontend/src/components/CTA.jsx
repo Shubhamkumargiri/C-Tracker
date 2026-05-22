@@ -12,7 +12,7 @@ function CTA(){
       <h2>Start <span>Tracking </span>Your <span>Coding Journey</span> Today</h2>
 
       <p>
-        Connect your GitHub, LeetCode and LinkedIn to unlock your
+        Connect your GitHub, LeetCode and Devpost to unlock your
         AI-powered career insights.
       </p>
 

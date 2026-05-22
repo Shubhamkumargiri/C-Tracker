@@ -10,8 +10,7 @@ import {
 } from "../../lib/auth"
 import { apiRequest } from "../../lib/api"
 import { useNavigate } from "react-router-dom"
-
-const MAX_IMAGE_DIMENSION = 512
+const MAX_IMAGE_DIMENSION = 128
 
 function Profile() {
   const navigate = useNavigate()
@@ -80,7 +79,7 @@ function Profile() {
           }
 
           context.drawImage(image, 0, 0, width, height)
-          resolve(canvas.toDataURL("image/jpeg", 0.82))
+          resolve(canvas.toDataURL("image/jpeg", 0.5))
         }
 
         image.onerror = () => {

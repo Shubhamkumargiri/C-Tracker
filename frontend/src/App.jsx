@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 import Home from "./pages/Home";
 import Features from "./pages/Features";
@@ -18,10 +19,24 @@ import Profile from "./pages/dashboard/Profile";
 import Analytics from "./pages/dashboard/Analytics";
 import Integrations from "./pages/dashboard/Integrations"
 import Settings from "./pages/dashboard/Settings";
+import ResumeBuilder from "./pages/dashboard/ResumeBuilder";
+import JobMatcher from "./pages/dashboard/JobMatcher";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
 
       <Route path="/" element={<Home />} />
       <Route path="/features" element={<Features />} />
@@ -40,11 +55,14 @@ function App() {
                 <Route path="analytics" element={<Analytics/>}/>
                 <Route path="profile" element={<Profile/>}/>
                 <Route path="integrations" element={<Integrations/>}/>
+                <Route path="resume" element={<ResumeBuilder/>}/>
+                <Route path="job-matcher" element={<JobMatcher/>}/>
                 <Route path="settings" element={<Settings/>}/>
               </Route>
               
 
     </Routes>
+    </>
     
   );
 }

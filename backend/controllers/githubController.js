@@ -71,26 +71,124 @@ export const getGithubAnalytics = async (req, res) => {
 
   if (!token) {
     try {
-      const fallbackResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`, {
-        headers: { "User-Agent": "Career-Tracker-App" }
-      });
+      const headers = { "User-Agent": "Career-Tracker-App" };
+      const [fallbackResponse, commitsRes, prsRes, contribsRes] = await Promise.allSettled([
+        fetch(`https://api.github.com/users/${encodeURIComponent(username)}`, { headers }),
+        fetch(`https://api.github.com/search/commits?q=author:${encodeURIComponent(username)}`, { headers: { ...headers, 'Accept': 'application/vnd.github.cloak-preview' } }),
+        fetch(`https://api.github.com/search/issues?q=author:${encodeURIComponent(username)}+type:pr`, { headers }),
+        fetch(`https://github-contributions-api.deno.dev/${encodeURIComponent(username)}.json`)
+      ]);
       
-      if (!fallbackResponse.ok) {
-        return res.status(fallbackResponse.status === 404 ? 404 : 500).json({ 
-          message: fallbackResponse.status === 404 ? "GitHub user not found." : "GitHub API rate limit exceeded. Please add GITHUB_TOKEN." 
-        });
+      let data = {};
+      let isRateLimited = false;
+      
+      if (fallbackResponse.status !== "fulfilled" || !fallbackResponse.value.ok) {
+        const status = fallbackResponse.status === "fulfilled" ? fallbackResponse.value.status : 500;
+        if (status === 404) {
+          return res.status(404).json({ message: "GitHub user not found." });
+        }
+        isRateLimited = true;
+      } else {
+        data = await fallbackResponse.value.json();
       }
       
-      const data = await fallbackResponse.json();
       const { from, to } = buildGithubDateRange();
+
+      let commits = "N/A";
+      let pullRequests = "N/A";
+      let contributions = "N/A";
+
+      if (!isRateLimited && commitsRes.status === "fulfilled" && commitsRes.value.ok) {
+        const cData = await commitsRes.value.json();
+        commits = cData.total_count ?? "N/A";
+      }
+      
+      if (!isRateLimited && prsRes.status === "fulfilled" && prsRes.value.ok) {
+        const pData = await prsRes.value.json();
+        pullRequests = pData.total_count ?? "N/A";
+      }
+      
+      if (contribsRes.status === "fulfilled" && contribsRes.value.ok) {
+        const ctData = await contribsRes.value.json();
+        contributions = ctData.totalContributions ?? "N/A";
+      }
+      
+      // If rate limited by API, scrape the HTML page as a fallback to get real basic stats
+      if (isRateLimited) {
+         try {
+             const htmlRes = await fetch(`https://github.com/${username}`);
+             if (htmlRes.ok) {
+                 const html = await htmlRes.text();
+                 
+                 const followersMatch = html.match(/<span class="text-bold color-fg-default">([\d.,kmK]+)<\/span>\s*followers/i);
+                 const followingMatch = html.match(/<span class="text-bold color-fg-default">([\d.,kmK]+)<\/span>\s*following/i);
+                 
+                 // Try to find the repository counter
+                 const reposMatch = html.match(/Repositories[^<]*<span[^>]*title="([^"]+)"[^>]*>/i) || 
+                                    html.match(/Repositories[^<]*<span[^>]*class="Counter"[^>]*>([\d.,kmK]+)<\/span>/i) ||
+                                    html.match(/Counter js-profile-repository-count"[^>]*>([\d.,kmK]+)<\/span>/i);
+                 
+                 const parseNum = (str) => {
+                     if (!str) return 0;
+                     str = str.toLowerCase().replace(/,/g, '');
+                     if (str.includes('k')) return parseFloat(str) * 1000;
+                     if (str.includes('m')) return parseFloat(str) * 1000000;
+                     return parseInt(str) || 0;
+                 };
+
+                 const followers = followersMatch ? parseNum(followersMatch[1]) : 0;
+                 const following = followingMatch ? parseNum(followingMatch[1]) : 0;
+                 const repos = reposMatch ? parseNum(reposMatch[1]) : 0;
+
+                 return res.json({
+                    username: username,
+                    name: username,
+                    repositories: repos,
+                    pullRequests: "N/A",
+                    commits: "N/A",
+                    contributions: contributions !== "N/A" ? contributions : 0,
+                    followers: followers,
+                    following: following,
+                    contributedRepositories: 0,
+                    reviews: 0,
+                    starredRepositories: 0,
+                    repositoryContributions: 0,
+                    pullRequestContributions: 0,
+                    profileScore: Math.min(repos * 2 + (contributions !== "N/A" ? 10 : 0), 40),
+                    dateRange: { from, to }
+                 });
+             }
+         } catch (e) {
+             console.error("HTML scrape fallback failed:", e);
+         }
+         
+         // If everything fails, gracefully degrade instead of crashing the UI or showing fake data
+         return res.json({
+            username: username,
+            name: username,
+            repositories: 0,
+            pullRequests: "N/A",
+            commits: "N/A",
+            contributions: contributions !== "N/A" ? contributions : 0,
+            followers: 0,
+            following: 0,
+            contributedRepositories: 0,
+            reviews: 0,
+            starredRepositories: 0,
+            repositoryContributions: 0,
+            pullRequestContributions: 0,
+            profileScore: 0,
+            dateRange: { from, to }
+         });
+      }
       
       return res.json({
         username: data.login,
         name: data.name || "",
         repositories: data.public_repos || 0,
-        pullRequests: "N/A",
-        commits: "N/A",
-        contributions: "N/A",
+        pullRequests,
+        commits,
+        contributions,
         followers: data.followers || 0,
         following: data.following || 0,
         contributedRepositories: 0,
@@ -98,7 +196,7 @@ export const getGithubAnalytics = async (req, res) => {
         starredRepositories: 0,
         repositoryContributions: 0,
         pullRequestContributions: 0,
-        profileScore: Math.min((data.public_repos || 0) * 2, 20),
+        profileScore: Math.min((data.public_repos || 0) * 2 + (typeof commits === 'number' ? commits/2 : 0), 40),
         dateRange: { from, to },
       });
     } catch (error) {

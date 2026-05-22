@@ -17,7 +17,7 @@ function Solution() {
         <div className="solution-card">
           <h3>Track Your Platforms</h3>
           <p>
-            Connect your LeetCode, GitHub, and LinkedIn profiles
+            Connect your LeetCode, GitHub, and Devpost profiles
             to monitor real progress across your developer journey.
           </p>
         </div>

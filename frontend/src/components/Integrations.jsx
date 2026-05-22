@@ -31,12 +31,12 @@ function Integrations() {
           </p>
         </div>
 
-        <div className="integration-card integration-card-linkedin">
-          <div className="integration-badge">IN</div>
-          <h3>LinkedIn</h3>
+        <div className="integration-card integration-card-devpost">
+          <div className="integration-badge">DP</div>
+          <h3>Devpost</h3>
           <p>
-            Analyze profile activity,
-            connections, and professional growth.
+            Showcase software projects,
+            hackathon submissions, and developer achievements.
           </p>
         </div>
 

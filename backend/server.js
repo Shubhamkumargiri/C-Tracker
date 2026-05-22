@@ -5,6 +5,9 @@ import authRoutes from "./routes/authRoutes.js";
 import githubRoutes from "./routes/githubRoutes.js";
 import leetcodeRoutes from "./routes/leetcodeRoutes.js";
 import timelineRoutes from "./routes/timelineRoutes.js";
+import devpostRoutes from "./routes/devpostRoutes.js";
+import ctaiRoutes from "./routes/ctaiRoutes.js";
+import jobRoutes from "./routes/jobRoutes.js";
 import cors from "cors";
 
 dotenv.config();
@@ -25,6 +28,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/github", githubRoutes);
 app.use("/api/leetcode", leetcodeRoutes);
 app.use("/api/timeline", timelineRoutes);
+app.use("/api/devpost", devpostRoutes);
+app.use("/api/ctai", ctaiRoutes);
+app.use("/api/jobs", jobRoutes);
 
 app.get("/api/routes-check", (req, res) => {
   res.json({

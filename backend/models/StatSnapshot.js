@@ -25,10 +25,10 @@ const platformStatsSchema = new mongoose.Schema(
       profileScore: Number,
       submissionDaysLast30: Number,
     },
-    linkedin: {
-      connections: Number,
-      profileViewers: Number,
-      postImpressions: Number,
+    devpost: {
+      projects: Number,
+      hackathons: Number,
+      followers: Number,
       profileScore: Number,
     },
   },

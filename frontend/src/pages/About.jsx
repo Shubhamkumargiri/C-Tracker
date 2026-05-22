@@ -91,7 +91,7 @@ function About(){
           <h4>Which platforms can I connect?</h4>
 
           <p>
-            You can connect GitHub, LeetCode, and LinkedIn
+            You can connect GitHub, LeetCode, and Devpost
             to track your developer progress.
           </p>
 
