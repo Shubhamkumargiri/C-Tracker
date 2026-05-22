@@ -15,6 +15,113 @@ function JobMatcher() {
     const [matchResult, setMatchResult] = useState(null);
     
     const fileInputRef = useRef(null);
+    
+    // Active Alert Resume States
+    const [activeResumeProfile, setActiveResumeProfile] = useState(() => {
+        try {
+            const profile = localStorage.getItem("active-resume-profile");
+            return profile ? JSON.parse(profile) : null;
+        } catch {
+            return null;
+        }
+    });
+    const [isUploadingAlertResume, setIsUploadingAlertResume] = useState(false);
+    const alertFileInputRef = useRef(null);
+
+    // Sync with Topbar Profile events
+    useState(() => {
+        const handleProfileUpdate = () => {
+            try {
+                const profile = localStorage.getItem("active-resume-profile");
+                setActiveResumeProfile(profile ? JSON.parse(profile) : null);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        window.addEventListener("resume-profile-updated", handleProfileUpdate);
+        window.addEventListener("storage", handleProfileUpdate);
+
+        return () => {
+            window.removeEventListener("resume-profile-updated", handleProfileUpdate);
+            window.removeEventListener("storage", handleProfileUpdate);
+        };
+    });
+
+    const handleUploadAlertResume = async (e) => {
+        const uploadedFile = e.target.files[0];
+        if (!uploadedFile) return;
+        
+        const name = uploadedFile.name.toLowerCase();
+        if (!name.endsWith(".pdf") && !name.endsWith(".docx")) {
+            return alert("Unsupported file type. Please upload a PDF or DOCX resume.");
+        }
+        
+        setIsUploadingAlertResume(true);
+        try {
+            const formData = new FormData();
+            formData.append("resume", uploadedFile);
+            formData.append("targetRole", "Software Developer");
+            
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/jobs/upload-resume`, {
+                method: "POST",
+                body: formData,
+            });
+            
+            if (!res.ok) throw new Error("Failed to upload and parse resume.");
+            
+            const data = await res.json();
+            if (data.resumeAnalysis) {
+                const profile = data.resumeAnalysis;
+                setActiveResumeProfile(profile);
+                localStorage.setItem("active-resume-profile", JSON.stringify(profile));
+                
+                // Alert Topbar to update
+                window.dispatchEvent(new Event("resume-profile-updated"));
+                
+                // Populate matched jobs if any returned
+                if (data.jobs && data.jobs.length > 0) {
+                    setJobs(data.jobs);
+                }
+                
+                alert(`Resume successfully set! Suggested role: ${profile.suggestedRole}`);
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Error parsing resume: " + error.message);
+        } finally {
+            setIsUploadingAlertResume(false);
+        }
+    };
+
+    const handleScanMatchingJobs = () => {
+        if (!activeResumeProfile) return;
+        setSearchRole(activeResumeProfile.suggestedRole);
+        // Trigger search by calling api directly
+        triggerSearch(activeResumeProfile.suggestedRole);
+    };
+
+    const triggerSearch = async (roleName) => {
+        setIsSearching(true);
+        setJobs([]);
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/jobs/search?role=${encodeURIComponent(roleName)}`);
+            if (res.ok) {
+                const data = await res.json();
+                setJobs(data);
+                if (data.length === 0) {
+                    alert("No jobs found for this role in India.");
+                }
+            } else {
+                alert("Failed to fetch jobs.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Network error.");
+        } finally {
+            setIsSearching(false);
+        }
+    };
 
     const handleSearch = async (e) => {
         if (e) e.preventDefault();
@@ -102,6 +209,114 @@ function JobMatcher() {
             <div className="jm-header">
                 <h1 className="jm-title">AI Job Finder</h1>
                 <p className="jm-subtitle">Find real remote & local jobs in India and evaluate your chances with AI.</p>
+            </div>
+
+            {/* Active Resume Alert Profile Panel */}
+            <div className="jm-alert-profile-section" style={{ marginBottom: '30px' }}>
+                {activeResumeProfile ? (
+                    <div className="jm-profile-card" style={{
+                        background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%)',
+                        border: '1.5px dashed rgba(168, 85, 247, 0.4)',
+                        borderRadius: '16px',
+                        padding: '24px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '20px',
+                        flexWrap: 'wrap',
+                        boxShadow: '0 10px 30px rgba(168, 85, 247, 0.05)'
+                    }}>
+                        <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                            <div style={{
+                                width: '48px', height: '48px', borderRadius: '50%',
+                                background: 'rgba(16, 185, 129, 0.15)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                color: '#10b981', fontSize: '1.4rem', fontWeight: 'bold',
+                                boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)'
+                            }}>
+                                ✓
+                            </div>
+                            <div>
+                                <h3 style={{ margin: '0 0 6px 0', color: 'var(--dashboard-text-strong)', fontSize: '1.15rem' }}>
+                                    Active AI Job Alerts Profile: <span style={{ color: '#c084fc' }}>{activeResumeProfile.suggestedRole}</span>
+                                </h3>
+                                <p style={{ margin: '0 0 12px 0', color: 'var(--dashboard-text-muted)', fontSize: '0.9rem' }}>
+                                    Candidate: <strong>{activeResumeProfile.name || 'Developer'}</strong> &bull; Experience: <strong>{activeResumeProfile.experienceLevel}</strong>
+                                </p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                    {activeResumeProfile.topSkills?.map((skill, idx) => (
+                                        <span key={idx} style={{ background: 'rgba(168, 85, 247, 0.15)', color: '#d8b4fe', padding: '4px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: '600' }}>
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '12px' }}>
+                            <button 
+                                onClick={handleScanMatchingJobs}
+                                className="jm-btn-primary"
+                                style={{ padding: '10px 20px', fontSize: '0.88rem' }}
+                            >
+                                🔍 Scan Matching Jobs
+                            </button>
+                            <button 
+                                onClick={() => {
+                                    if(window.confirm("Remove your active alert profile?")) {
+                                        localStorage.removeItem("active-resume-profile");
+                                        setActiveResumeProfile(null);
+                                        window.dispatchEvent(new Event("resume-profile-updated"));
+                                    }
+                                }}
+                                className="jm-btn-outline"
+                                style={{ padding: '10px 18px', border: '1px solid var(--dashboard-danger)', color: 'var(--dashboard-danger)', background: 'transparent' }}
+                            >
+                                Remove Alerts
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="jm-profile-card" style={{
+                        background: 'var(--dashboard-surface-strong)',
+                        border: '1px solid var(--dashboard-border)',
+                        borderRadius: '16px',
+                        padding: '24px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '20px',
+                        flexWrap: 'wrap',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}>
+                        <div>
+                            <h3 style={{ margin: '0 0 6px 0', color: 'var(--dashboard-text-strong)', fontSize: '1.1rem' }}>
+                                📄 Enable Real-Time AI Job Alerts
+                            </h3>
+                            <p style={{ margin: 0, color: 'var(--dashboard-text-muted)', fontSize: '0.9rem', maxWidth: '580px', lineHeight: '1.5' }}>
+                                Upload your resume here. The AI will analyze your experience and skills, map your target job role, and notify you instantly on the top bar as soon as matching Indian jobs are found!
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <input 
+                                type="file" 
+                                accept=".pdf,.docx" 
+                                onChange={handleUploadAlertResume} 
+                                ref={alertFileInputRef} 
+                                style={{ display: 'none' }}
+                            />
+                            <button 
+                                onClick={() => alertFileInputRef.current?.click()}
+                                className="jm-btn-primary"
+                                disabled={isUploadingAlertResume}
+                                style={{ padding: '12px 24px', whiteSpace: 'nowrap' }}
+                            >
+                                {isUploadingAlertResume ? "🤖 Setting Up..." : "📤 Upload Resume & Start alerts"}
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Search Section */}

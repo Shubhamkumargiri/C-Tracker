@@ -179,6 +179,7 @@ function Settings() {
     setPreferences((current) => {
       const nextPreferences = { ...current, [key]: !current[key] }
       window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(nextPreferences))
+      window.dispatchEvent(new Event("settings-updated"))
       return nextPreferences
     })
   }
@@ -323,8 +324,8 @@ function Settings() {
               onClick={() => handleToggle("interviewAlerts")}
             >
               <div>
-                <strong>Interview reminders</strong>
-                <p>Keep nudges for practice and application follow-ups.</p>
+                <strong>Job & Role Notifications</strong>
+                <p>Receive real-time alerts when new jobs matching your resume are found.</p>
               </div>
               <span>{preferences.interviewAlerts ? "On" : "Off"}</span>
             </button>
