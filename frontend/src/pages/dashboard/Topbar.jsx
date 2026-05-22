@@ -73,12 +73,10 @@ function Topbar({ onToggleSidebar }) {
       return [];
     }
   })
-  const [isUploading, setIsUploading] = useState(false)
   const [isCheckingJobs, setIsCheckingJobs] = useState(false)
   const [toast, setToast] = useState({ show: false, title: "", message: "" })
 
   const dropdownRef = useRef(null)
-  const fileInputRef = useRef(null)
 
   const unreadCount = notifications.filter(n => !n.read).length
 
@@ -102,6 +100,23 @@ function Topbar({ onToggleSidebar }) {
     return () => {
       window.removeEventListener("settings-updated", handleSettingsUpdate);
       window.removeEventListener("storage", handleSettingsUpdate);
+    };
+  }, []);
+
+  // Listen to Resume Profile Changes
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      try {
+        const profile = localStorage.getItem("active-resume-profile");
+        setActiveResumeProfile(profile ? JSON.parse(profile) : null);
+      } catch (err) {
+        console.error("Error loading resume profile in Topbar:", err);
+      }
+    };
+
+    window.addEventListener("resume-profile-updated", handleProfileUpdate);
+    return () => {
+      window.removeEventListener("resume-profile-updated", handleProfileUpdate);
     };
   }, []);
 
@@ -187,85 +202,6 @@ function Topbar({ onToggleSidebar }) {
     return () => clearInterval(interval);
   }, [activeResumeProfile, notificationsEnabled]);
 
-  // Handle Resume Upload & Parse
-  const handleUploadResume = async (e) => {
-    const uploadedFile = e.target.files[0];
-    if (!uploadedFile) return;
-    
-    const name = uploadedFile.name.toLowerCase();
-    if (!name.endsWith(".pdf") && !name.endsWith(".docx")) {
-      alert("Unsupported file type. Please upload a PDF or DOCX resume.");
-      return;
-    }
-    
-    setIsUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append("resume", uploadedFile);
-      formData.append("targetRole", "Software Developer");
-      
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/api/jobs/upload-resume`,
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-      
-      if (!res.ok) {
-        throw new Error("Failed to process resume. Please try again.");
-      }
-      
-      const data = await res.json();
-      if (data.resumeAnalysis) {
-        const profile = data.resumeAnalysis;
-        setActiveResumeProfile(profile);
-        localStorage.setItem("active-resume-profile", JSON.stringify(profile));
-        
-        // Broadcast profile update event to other pages (e.g. JobMatcher)
-        window.dispatchEvent(new Event("resume-profile-updated"));
-
-        // Populate initial notifications from returned jobs
-        if (data.jobs && data.jobs.length > 0) {
-          const newNotifs = data.jobs.map(job => {
-            const score = computeMatchScore(job, profile);
-            return {
-              id: job.id,
-              title: `AI Match: ${job.title}`,
-              company: job.company,
-              location: job.location,
-              salary: job.salary,
-              url: job.url,
-              matchScore: score,
-              skills: job.requiredSkills || [profile.suggestedRole],
-              logo: job.logo,
-              read: false,
-              createdAt: Date.now()
-            };
-          }).filter(n => n.matchScore >= 60);
-          
-          setNotifications(newNotifs);
-          localStorage.setItem("job-notifications", JSON.stringify(newNotifs));
-          
-          setToast({
-            show: true,
-            title: "Resume Analyzed Successfully!",
-            message: `Inferred Profile: ${profile.suggestedRole}. Found ${newNotifs.length} matching jobs!`
-          });
-          
-          setTimeout(() => {
-            setToast({ show: false, title: "", message: "" });
-          }, 6000);
-        }
-      }
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "An error occurred during parsing.");
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
   const handleMarkAllAsRead = () => {
     const updated = notifications.map(n => ({ ...n, read: true }));
     setNotifications(updated);
@@ -275,14 +211,6 @@ function Topbar({ onToggleSidebar }) {
   const handleClearNotifications = () => {
     setNotifications([]);
     localStorage.setItem("job-notifications", JSON.stringify([]));
-  };
-
-  const handleRemoveProfile = () => {
-    if (window.confirm("Remove active resume profile and disable auto matching alerts?")) {
-      setActiveResumeProfile(null);
-      localStorage.removeItem("active-resume-profile");
-      window.dispatchEvent(new Event("resume-profile-updated"));
-    }
   };
 
   return (
@@ -367,57 +295,13 @@ function Topbar({ onToggleSidebar }) {
                 </div>
               ) : (
                 <>
-                  {/* Resume Upload alert system */}
-                  <div className="resume-matching-setup">
-                    {activeResumeProfile ? (
-                      <div className="active-profile-card">
-                        <div className="profile-details">
-                          <span className="check-icon">✓</span>
-                          <div>
-                            <strong>Active Alert Resume</strong>
-                            <p className="role-tag">{activeResumeProfile.suggestedRole}</p>
-                            <div className="skills-row">
-                              {activeResumeProfile.topSkills?.slice(0, 3).map((s, idx) => (
-                                <span key={idx} className="skill-mini-tag">{s}</span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                        <button className="remove-profile-btn" title="Remove Profile" onClick={handleRemoveProfile}>
-                          &times;
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="upload-alert-box">
-                        <h5>📄 Set Up Job Alerts</h5>
-                        <p>Upload your resume to automatically scan and notify you when matching jobs are found in India.</p>
-                        <input 
-                          type="file" 
-                          id="dropdown-resume-upload" 
-                          accept=".pdf,.docx" 
-                          onChange={handleUploadResume} 
-                          ref={fileInputRef} 
-                          style={{ display: "none" }}
-                        />
-                        <button 
-                          type="button" 
-                          className="upload-alert-btn"
-                          disabled={isUploading}
-                          onClick={() => fileInputRef.current?.click()}
-                        >
-                          {isUploading ? "🤖 Parsing Resume..." : "📤 Add Resume for Alerts"}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
                   {/* List of matched jobs */}
                   <div className="notifications-list">
                     {notifications.length === 0 ? (
                       <div className="dropdown-empty">
                         <span className="empty-icon">🔔</span>
                         <p>No job alerts yet.</p>
-                        <small className="empty-sub">Configure your resume profile above to scan for matching jobs.</small>
+                        <small className="empty-sub">Matching jobs will appear here automatically when found.</small>
                       </div>
                     ) : (
                       notifications.map(notif => (
